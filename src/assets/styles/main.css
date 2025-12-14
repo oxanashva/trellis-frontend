@@ -18,6 +18,7 @@
 @import "cmps/UserMsg";
 @import "cmps/Loader";
 @import "cmps/ItemCreator";
+@import "cmps/ImgUploader";
 
 @import "cmps/board/BoardList";
 @import "cmps/board/BoardPreview";

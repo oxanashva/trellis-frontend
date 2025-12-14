@@ -153,19 +153,20 @@ export function BoardPicker({ setStarred, isStarred, prefs, onUpdateBoard, onRem
                                     </>
                                 )}
                             </ImgUploader>
-                            <span>Custom</span>
+                            <span className="change-bg-btn-name">Custom</span>
                         </li>
                         <li className="change-bg-item">
-                            <button
-                                className="change-bg-btn"
+                            <input
+                                type="button"
+                                style={{ backgroundImage: `url(${ColorsImg})` }}
+                                className="change-bg-btn colors-btn"
                                 onClick={() => {
                                     setIsEditingColors(true)
                                     setIsEditingBoardBackground(false)
                                 }}
                             >
-                                <img src={ColorsImg} alt="Colors" />
-                            </button>
-                            <span>Colors</span>
+                            </input>
+                            <span className="change-bg-btn-name">Colors</span>
                         </li>
                     </ul>
                 </>
