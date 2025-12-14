@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { getContrastingTextColor } from '../services/util.service'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 import { logout } from '../store/actions/user.actions'
-import TrelloIcon from '../assets/images/icons/trello.svg?react'
+import TrellisIcon from '../assets/images/icons/trellis.svg?react'
 import osAvatarImg from '../assets/images/avatars/OS-avatar.png'
 
 export function AppHeader() {
@@ -45,8 +45,8 @@ export function AppHeader() {
 		<header style={headerStyle} className={headerClassName}>
 			<nav>
 				<NavLink to="/" className="logo">
-					<TrelloIcon width={24} height={24} fill="currentColor" />
-					<span>Trellist</span>
+					<TrellisIcon width={24} height={24} fill="currentColor" />
+					<span>Trellis</span>
 				</NavLink>
 
 				{isHomePage &&
