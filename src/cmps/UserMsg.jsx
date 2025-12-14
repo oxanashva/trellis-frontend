@@ -8,7 +8,7 @@ import ErrorIcon from '../assets/images/icons/error.svg?react'
 
 export function UserMsg() {
 	const [msg, setMsg] = useState(null)
-	const [open, setOpen] = useState(true)
+	const [open, setOpen] = useState(false)
 
 	useEffect(() => {
 		const unsubscribe = eventBus.on('show-msg', msg => {
@@ -57,30 +57,33 @@ export function UserMsg() {
 	</button>
 
 	return (
-		<div>
-			<Snackbar
-				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-				open={open}
-				sx={{
-					'& .MuiSnackbarContent-root': {
-						position: 'relative',
-						width: 'calc(0.5rem * 50)',
-						backgroundColor: '#ffffff',
-						padding: '1rem',
-						color: 'var(--text)',
-						fontWeight: 600,
-						borderRadius: '0.25rem',
-						boxShadow: '0px 8px 12px #1E1F2126, 0px 0px 1px #1E1F21',
-					},
-					'& .MuiSnackbarContent-action': {
-						marginRight: 0,
-					},
-				}}
-				autoHideDuration={6000}
-				onClose={handleClose}
-				message={msg?.type === 'success' ? successMessage : errorMessage}
-				action={action}
-			/>
-		</div>
+		<>
+			{msg && (
+				<Snackbar
+					anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+					open={open}
+					sx={{
+						'& .MuiSnackbarContent-root': {
+							position: 'relative',
+							width: 'calc(0.5rem * 50)',
+							backgroundColor: '#ffffff',
+							padding: '1rem',
+							color: 'var(--text)',
+							fontWeight: 600,
+							borderRadius: '0.25rem',
+							boxShadow: '0px 8px 12px #1E1F2126, 0px 0px 1px #1E1F21',
+							zIndex: theme => theme.zIndex.modal + 1,
+						},
+						'& .MuiSnackbarContent-action': {
+							marginRight: 0,
+						},
+					}}
+					autoHideDuration={6000}
+					onClose={handleClose}
+					message={msg?.type === 'success' ? successMessage : errorMessage}
+					action={action}
+				/>
+			)}
+		</>
 	)
 }

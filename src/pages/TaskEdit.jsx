@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useState } from "react"
 import { useSelector } from "react-redux"
-import { Link, useParams } from "react-router"
+import { Link, useNavigate, useParams } from "react-router"
 
 import dayjs from "dayjs"
 import customParseFormat from "dayjs/plugin/customParseFormat" // Needed for parsing time like "h:mm A"
@@ -12,6 +12,9 @@ import { coverColorsMap, formatDate, getLabelColor, makeId } from "../services/u
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service"
 
 import { useTextareaAutofocusAndResize } from "../customHooks/useTextareaAutofocusAndResize"
+
+import Dialog from '@mui/material/Dialog'
+import DialogContent from '@mui/material/DialogContent'
 
 import MoreIcon from "../assets/images/icons/more.svg?react"
 import ImageIcon from "../assets/images/icons/image.svg?react"
@@ -33,8 +36,8 @@ import ShevronDown from "../assets/images/icons/shevron-down.svg?react"
 import { DynamicPicker } from "../cmps/picker/DynamicPicker"
 
 export function TaskEdit() {
-    const elDialog = useRef(null)
     const { taskId } = useParams()
+    const navigate = useNavigate()
 
     const board = useSelector(storeState => storeState.boardModule.board)
     const task = board?.tasks.find(task => task?._id === taskId)
@@ -112,10 +115,6 @@ export function TaskEdit() {
             }
         }
     }
-
-    useEffect(() => {
-        elDialog.current.showModal()
-    }, [])
 
     function handleChange(ev) {
         const field = ev.target.name
@@ -295,80 +294,98 @@ export function TaskEdit() {
             : {}
 
     return (
-        <dialog ref={elDialog} className="task-edit">
-            <header style={headerStyle} className="task-edit-header">
-                <span className="group-name">{group?.name}</span>
-                <div className="task-header-actions">
-                    <button
-                        className="icon-btn dynamic-btn task-header-btn"
-                        onClick={(event) => {
-                            handlePopoverOpen(event, PICKER_MAP.COVER)
-                        }}
-                    >
-                        <ImageIcon width={16} height={16} fill="currentColor" />
-                    </button>
+        <Dialog
+            open={true}
+            onClose={() => navigate(`/board/${board?._id}`)}
+            maxWidth="lg"
+            fullWidth
+            sx={{
+                zIndex: theme => theme.zIndex.modal,
+                '& .MuiPaper-root': {
+                    borderRadius: '0.75rem',
+                    padding: 0,
+                    overflow: 'hidden'
+                },
+                '& .MuiDialogContent-root': {
+                    padding: 0,
+                    overflow: 'hidden'
+                }
+            }}
+        >
+            <DialogContent className="task-edit">
+                <header style={headerStyle} className="task-edit-header">
+                    <span className="group-name">{group?.name}</span>
+                    <div className="task-header-actions">
+                        <button
+                            className="icon-btn dynamic-btn task-header-btn"
+                            onClick={(event) => {
+                                handlePopoverOpen(event, PICKER_MAP.COVER)
+                            }}
+                        >
+                            <ImageIcon width={16} height={16} fill="currentColor" />
+                        </button>
 
-                    {/* TODO: implement more options */}
-                    {/* <button className="icon-btn dynamic-btn task-header-btn">
+                        {/* TODO: implement more options */}
+                        {/* <button className="icon-btn dynamic-btn task-header-btn">
                         <MoreIcon width={16} height={16} fill="currentColor" />
                     </button> */}
 
-                    <Link to={`/board/${board?._id}`} className="icon-btn dynamic-btn link-btn task-header-btn">
-                        <CloseIcon width={20} height={20} fill="currentColor" />
-                    </Link>
-                </div>
-            </header>
-            <div className="content-wrapper">
-                <main>
-                    <section className="task-title task-grid-container">
-                        <div className="task-icon-check" onClick={completeTask}>
-                            {isChecked
-                                ? <span style={{ color: "#6A9A23" }} title="Mark incomplete"><CircleCheckIcon width={16} height={16} fill="currentColor" /></span>
-                                : <span title="Mark complete"><CircleIcon width={16} height={16} fill="currentColor" /></span>}
-                        </div>
-                        {/* TODO: implement reusable component for editable field */}
-                        <div className="editable-title-container">
-                            <h2
-                                style={{ visibility: isNameEditing ? 'hidden' : 'visible' }}
-                                className="editable-title title-display"
-                                onClick={() => setIsNameEditing(true)}
-                            >
-                                {taskName}
-                            </h2>
+                        <Link to={`/board/${board?._id}`} className="icon-btn dynamic-btn link-btn task-header-btn">
+                            <CloseIcon width={20} height={20} fill="currentColor" />
+                        </Link>
+                    </div>
+                </header>
+                <div className="content-wrapper">
+                    <main>
+                        <section className="task-title task-grid-container">
+                            <div className="task-icon-check" onClick={completeTask}>
+                                {isChecked
+                                    ? <span style={{ color: "#6A9A23" }} title="Mark incomplete"><CircleCheckIcon width={16} height={16} fill="currentColor" /></span>
+                                    : <span title="Mark complete"><CircleIcon width={16} height={16} fill="currentColor" /></span>}
+                            </div>
+                            {/* TODO: implement reusable component for editable field */}
+                            <div className="editable-title-container">
+                                <h2
+                                    style={{ visibility: isNameEditing ? 'hidden' : 'visible' }}
+                                    className="editable-title title-display"
+                                    onClick={() => setIsNameEditing(true)}
+                                >
+                                    {taskName}
+                                </h2>
 
-                            {isNameEditing && (
-                                <textarea
-                                    ref={nameInputRef}
-                                    className="editable-title title-edit"
-                                    type="text"
-                                    name="name"
-                                    value={taskName}
-                                    onChange={handleChange}
-                                    onBlur={onNameBlur}
-                                    onKeyDown={onNameKeyDown}
+                                {isNameEditing && (
+                                    <textarea
+                                        ref={nameInputRef}
+                                        className="editable-title title-edit"
+                                        type="text"
+                                        name="name"
+                                        value={taskName}
+                                        onChange={handleChange}
+                                        onBlur={onNameBlur}
+                                        onKeyDown={onNameKeyDown}
+                                    />
+                                )}
+                            </div>
+                        </section>
+                        <div className="task-content">
+                            {picker && (
+                                <DynamicPicker
+                                    task={task}
+                                    picker={picker}
+                                    open={openPopover}
+                                    anchorEl={anchorEl}
+                                    onClose={handlePopoverClose}
+                                    onUpdateTask={onUpdateTask}
+                                    onAddLabel={onAddLabel}
+                                    onUpdateLabel={onUpdateLabel}
+                                    onRemoveLabel={onRemoveLabel}
                                 />
                             )}
-                        </div>
-                    </section>
-                    <div className="task-content">
-                        {picker && (
-                            <DynamicPicker
-                                task={task}
-                                picker={picker}
-                                open={openPopover}
-                                anchorEl={anchorEl}
-                                onClose={handlePopoverClose}
-                                onUpdateTask={onUpdateTask}
-                                onAddLabel={onAddLabel}
-                                onUpdateLabel={onUpdateLabel}
-                                onRemoveLabel={onRemoveLabel}
-                            />
-                        )}
-                        <section className="task-grid-container">
-                            <div></div>
-                            <div className="task-actions-btns">
-                                {/* TODO: implement adding new action */}
-                                {/* <button
+                            <section className="task-grid-container">
+                                <div></div>
+                                <div className="task-actions-btns">
+                                    {/* TODO: implement adding new action */}
+                                    {/* <button
                                     className="action-btn"
                                     onClick={(event) => {
                                         handlePopoverOpen(event, PICKER_MAP.ADD)
@@ -376,24 +393,24 @@ export function TaskEdit() {
                                     <PlusIcon width={16} height={16} fill="currentColor" />
                                     <span>Add</span>
                                 </button> */}
-                                <button
-                                    className="action-btn"
-                                    onClick={(event) => {
-                                        handlePopoverOpen(event, PICKER_MAP.LABEL)
-                                    }}>
-                                    <LabelIcon width={16} height={16} fill="currentColor" />
-                                    <span>Labels</span>
-                                </button>
-                                <button
-                                    className="action-btn"
-                                    onClick={(event) => {
-                                        handlePopoverOpen(event, PICKER_MAP.DATE)
-                                    }}>
-                                    <ClockIcon width={16} height={16} fill="currentColor" />
-                                    <span>Dates</span>
-                                </button>
-                                {/* TODO: implement adding checklists */}
-                                {/* <button
+                                    <button
+                                        className="action-btn"
+                                        onClick={(event) => {
+                                            handlePopoverOpen(event, PICKER_MAP.LABEL)
+                                        }}>
+                                        <LabelIcon width={16} height={16} fill="currentColor" />
+                                        <span>Labels</span>
+                                    </button>
+                                    <button
+                                        className="action-btn"
+                                        onClick={(event) => {
+                                            handlePopoverOpen(event, PICKER_MAP.DATE)
+                                        }}>
+                                        <ClockIcon width={16} height={16} fill="currentColor" />
+                                        <span>Dates</span>
+                                    </button>
+                                    {/* TODO: implement adding checklists */}
+                                    {/* <button
                                     className="action-btn"
                                     onClick={(event) => {
                                         handlePopoverOpen(event, PICKER_MAP.CHECKLIST)
@@ -401,16 +418,16 @@ export function TaskEdit() {
                                     <CheckListIcon width={16} height={16} fill="currentColor" />
                                     <span>Checklists</span>
                                 </button> */}
-                                <button
-                                    className="action-btn"
-                                    onClick={() => {
-                                        handlePopoverOpen(event, PICKER_MAP.MEMBER)
-                                    }}>
-                                    <MemberPlusIcon width={16} height={16} fill="currentColor" />
-                                    <span>Members</span>
-                                </button>
-                                {/* TODO: implement adding attachments */}
-                                {/* <button
+                                    <button
+                                        className="action-btn"
+                                        onClick={() => {
+                                            handlePopoverOpen(event, PICKER_MAP.MEMBER)
+                                        }}>
+                                        <MemberPlusIcon width={16} height={16} fill="currentColor" />
+                                        <span>Members</span>
+                                    </button>
+                                    {/* TODO: implement adding attachments */}
+                                    {/* <button
                                     className="action-btn"
                                     onClick={(event) => {
                                         handlePopoverOpen(event, PICKER_MAP.ATTACHMENT)
@@ -418,282 +435,283 @@ export function TaskEdit() {
                                     <AttachmentIcon width={16} height={16} fill="currentColor" />
                                     <span>Attachments</span>
                                 </button> */}
-                            </div>
-                        </section>
+                                </div>
+                            </section>
 
-                        {(task?.idLabels?.length > 0 || task?.due || task?.start) &&
-                            <div className="task-params">
-                                {/* TODO: implement displaying members */}
-                                {/* <section className="task-flex-container">
+                            {(task?.idLabels?.length > 0 || task?.due || task?.start) &&
+                                <div className="task-params">
+                                    {/* TODO: implement displaying members */}
+                                    {/* <section className="task-flex-container">
                                 <h3 className="params-heading">Members</h3>
                                 <button className="btn-neutral">
                                     Member
                                 </button>
                             </section> */}
-                                {task?.idLabels?.length > 0 &&
-                                    <section className="task-flex-container">
-                                        <h3 className="params-heading">Labels</h3>
-                                        <div className="labels-container">
-                                            {task?.idLabels?.map((labelId) => {
-                                                const label = labels.find((l) => l._id === labelId)
-                                                return (
-                                                    <button
-                                                        key={labelId}
-                                                        style={{ backgroundColor: getLabelColor(label?.color) }}
-                                                        onClick={(event) => {
-                                                            handlePopoverOpen(event, PICKER_MAP.LABEL, labelId)
-                                                        }}
-                                                        className="btn-neutral"
-                                                    >
-                                                        {labels.find((label) => label._id === labelId)?.name}
-                                                    </button>
-                                                )
-                                            })}
+                                    {task?.idLabels?.length > 0 &&
+                                        <section className="task-flex-container">
+                                            <h3 className="params-heading">Labels</h3>
+                                            <div className="labels-container">
+                                                {task?.idLabels?.map((labelId) => {
+                                                    const label = labels.find((l) => l._id === labelId)
+                                                    return (
+                                                        <button
+                                                            key={labelId}
+                                                            style={{ backgroundColor: getLabelColor(label?.color) }}
+                                                            onClick={(event) => {
+                                                                handlePopoverOpen(event, PICKER_MAP.LABEL, labelId)
+                                                            }}
+                                                            className="btn-neutral"
+                                                        >
+                                                            {labels.find((label) => label._id === labelId)?.name}
+                                                        </button>
+                                                    )
+                                                })}
+                                                <button
+                                                    className="btn-neutral label-add-btn"
+                                                    onClick={(event) => {
+                                                        handlePopoverOpen(event, PICKER_MAP.LABEL)
+                                                    }}>
+                                                    <PlusIcon width={16} height={16} fill="currentColor" />
+                                                </button>
+                                            </div>
+                                        </section>
+                                    }
+
+                                    {(task?.due || task?.start) &&
+                                        <section className="task-flex-container">
+                                            <h3 className="params-heading">
+                                                {(task?.start && task?.due)
+                                                    ? "Dates"
+                                                    : task?.due
+                                                        ? "Due date"
+                                                        : "Start date"
+                                                }
+                                            </h3>
                                             <button
-                                                className="btn-neutral label-add-btn"
+                                                className="btn-neutral"
                                                 onClick={(event) => {
-                                                    handlePopoverOpen(event, PICKER_MAP.LABEL)
-                                                }}>
-                                                <PlusIcon width={16} height={16} fill="currentColor" />
+                                                    handlePopoverOpen(event, PICKER_MAP.DATE)
+                                                }}
+                                            >
+                                                {task.start ? dayjs(task.start).format("MMM DD") : ""}
+                                                {task.start && task.due && " - "}
+                                                {task.due ? dayjs(task.due).format("MMM DD") : ""} {task.dueTime ? `, ${task.dueTime}` : ""}
+                                                {badgeInfo && (
+                                                    <span className={`due-badge ${badgeInfo.className}`}>
+                                                        {badgeInfo.text}
+                                                    </span>
+                                                )}
+                                                <ShevronDown width={16} height={16} fill="currentColor" />
                                             </button>
-                                        </div>
-                                    </section>
-                                }
+                                        </section>
+                                    }
 
-                                {(task?.due || task?.start) &&
-                                    <section className="task-flex-container">
-                                        <h3 className="params-heading">
-                                            {(task?.start && task?.due)
-                                                ? "Dates"
-                                                : task?.due
-                                                    ? "Due date"
-                                                    : "Start date"
-                                            }
-                                        </h3>
-                                        <button
-                                            className="btn-neutral"
-                                            onClick={(event) => {
-                                                handlePopoverOpen(event, PICKER_MAP.DATE)
-                                            }}
-                                        >
-                                            {task.start ? dayjs(task.start).format("MMM DD") : ""}
-                                            {task.start && task.due && " - "}
-                                            {task.due ? dayjs(task.due).format("MMM DD") : ""} {task.dueTime ? `, ${task.dueTime}` : ""}
-                                            {badgeInfo && (
-                                                <span className={`due-badge ${badgeInfo.className}`}>
-                                                    {badgeInfo.text}
-                                                </span>
-                                            )}
-                                            <ShevronDown width={16} height={16} fill="currentColor" />
-                                        </button>
-                                    </section>
-                                }
-
-                                {/* TODO: implement adding votes */}
-                                {/* <section className="task-flex-container">
+                                    {/* TODO: implement adding votes */}
+                                    {/* <section className="task-flex-container">
                                 <h3 className="params-heading">Votes</h3>
                                 <button className="btn-neutral">
                                     <ThumbsUpIcon width={16} height={16} fill="currentColor" />
                                     <span>Vote</span>
                                 </button>
                             </section> */}
-                            </div>}
+                                </div>}
 
-                        <section className="task-grid-container task-description-container">
+                            <section className="task-grid-container task-description-container">
+                                <div className="task-icon">
+                                    <DescriptionIcon width={16} height={16} fill="currentColor" />
+                                </div>
+                                <h3 className="heading">Description</h3>
+                                <div></div>
+
+                                {(task?.desc && !isDescEditing) &&
+                                    <p className="description" onClick={() => setIsDescEditing(true)}>
+                                        {task.desc}
+                                    </p>
+                                }
+
+                                {(!task?.desc && !isDescEditing) &&
+                                    <button
+                                        className="editable"
+                                        onClick={() => setIsDescEditing(true)}
+                                    >
+                                        Add a more detailed description
+                                    </button>
+                                }
+
+                                {/* TODO: implement reusable component for editable field */}
+                                {isDescEditing &&
+                                    <form onSubmit={onDescriptionSubmit}>
+                                        <textarea
+                                            ref={descTextareaRef}
+                                            className="edit-textarea"
+                                            name="desc"
+                                            value={taskDescription}
+                                            onChange={handleChange}
+                                            placeholder="Add a more detailed description">
+                                        </textarea>
+                                        <div className="edit-description-actions">
+                                            <button
+                                                className="btn-primary"
+                                                type="submit"
+                                            >
+                                                Save
+                                            </button>
+                                            <button
+                                                className="dynamic-btn"
+                                                type="button"
+                                                onClick={() => {
+                                                    setTaskDescription(task.desc || "")
+                                                    setIsDescEditing(false)
+                                                }}
+                                            >
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </form>
+                                }
+                            </section>
+                        </div>
+                    </main>
+
+                    {/* TODO: move actions to separate component */}
+                    <aside>
+                        <section className="task-grid-container">
                             <div className="task-icon">
-                                <DescriptionIcon width={16} height={16} fill="currentColor" />
+                                <CommentText width={16} height={16} fill="currentColor" />
                             </div>
-                            <h3 className="heading">Description</h3>
-                            <div></div>
+                            <h3 className="heading">Comments and activities</h3>
 
-                            {(task?.desc && !isDescEditing) &&
-                                <p className="description" onClick={() => setIsDescEditing(true)}>
-                                    {task.desc}
-                                </p>
-                            }
-
-                            {(!task?.desc && !isDescEditing) &&
+                            {(!isAddingNewComment && !editingCommentId) && (
                                 <button
-                                    className="editable"
-                                    onClick={() => setIsDescEditing(true)}
+                                    className="comment editable add-comment"
+                                    onClick={() => {
+                                        setEditingCommentId(null)
+                                        setCommentText("")
+                                        setIsAddingNewComment(true)
+                                    }}
                                 >
-                                    Add a more detailed description
+                                    Write a comment...
                                 </button>
-                            }
+                            )}
 
-                            {/* TODO: implement reusable component for editable field */}
-                            {isDescEditing &&
-                                <form onSubmit={onDescriptionSubmit}>
+                            {(isAddingNewComment && !editingCommentId) && (
+                                <form
+                                    className="edit-comment-form" onSubmit={(ev) => {
+                                        onActionSubmit(ev, null)
+                                        setIsAddingNewComment(false)
+                                    }}>
                                     <textarea
-                                        ref={descTextareaRef}
+                                        ref={commentTextareaRef}
                                         className="edit-textarea"
-                                        name="desc"
-                                        value={taskDescription}
+                                        name="comment"
+                                        value={commentText}
                                         onChange={handleChange}
-                                        placeholder="Add a more detailed description">
-                                    </textarea>
-                                    <div className="edit-description-actions">
-                                        <button
-                                            className="btn-primary"
-                                            type="submit"
-                                        >
-                                            Save
-                                        </button>
+                                        placeholder="Write a comment..."
+                                    ></textarea>
+                                    <div className="edit-comment-actions edit-description-actions">
+                                        <button className="btn-primary" type="submit">Save</button>
                                         <button
                                             className="dynamic-btn"
                                             type="button"
                                             onClick={() => {
-                                                setTaskDescription(task.desc || "")
-                                                setIsDescEditing(false)
+                                                setCommentText("")
+                                                setIsAddingNewComment(false)
                                             }}
                                         >
                                             Cancel
                                         </button>
                                     </div>
                                 </form>
-                            }
-                        </section>
-                    </div>
-                </main>
+                            )}
 
-                {/* TODO: move actions to separate component */}
-                <aside>
-                    <section className="task-grid-container">
-                        <div className="task-icon">
-                            <CommentText width={16} height={16} fill="currentColor" />
-                        </div>
-                        <h3 className="heading">Comments and activities</h3>
-
-                        {(!isAddingNewComment && !editingCommentId) && (
-                            <button
-                                className="comment editable add-comment"
-                                onClick={() => {
-                                    setEditingCommentId(null)
-                                    setCommentText("")
-                                    setIsAddingNewComment(true)
-                                }}
-                            >
-                                Write a comment...
-                            </button>
-                        )}
-
-                        {(isAddingNewComment && !editingCommentId) && (
-                            <form
-                                className="edit-comment-form" onSubmit={(ev) => {
-                                    onActionSubmit(ev, null)
-                                    setIsAddingNewComment(false)
-                                }}>
-                                <textarea
-                                    ref={commentTextareaRef}
-                                    className="edit-textarea"
-                                    name="comment"
-                                    value={commentText}
-                                    onChange={handleChange}
-                                    placeholder="Write a comment..."
-                                ></textarea>
-                                <div className="edit-comment-actions edit-description-actions">
-                                    <button className="btn-primary" type="submit">Save</button>
-                                    <button
-                                        className="dynamic-btn"
-                                        type="button"
-                                        onClick={() => {
-                                            setCommentText("")
-                                            setIsAddingNewComment(false)
-                                        }}
-                                    >
-                                        Cancel
-                                    </button>
-                                </div>
-                            </form>
-                        )}
-
-                        {/* TODO: implement reusable component for editable field */}
-                        {actions?.map((comment) => {
-                            const isThisCommentEditing = comment._id === editingCommentId
-                            return (
-                                <React.Fragment key={comment._id}>
-                                    {/* TODO: Implement conditional rendering of avatar-image or avatar-fallback */}
-                                    {/* <div>
+                            {/* TODO: implement reusable component for editable field */}
+                            {actions?.map((comment) => {
+                                const isThisCommentEditing = comment._id === editingCommentId
+                                return (
+                                    <React.Fragment key={comment._id}>
+                                        {/* TODO: Implement conditional rendering of avatar-image or avatar-fallback */}
+                                        {/* <div>
                                         <img src={comment.memberCreator.avatarUrl} alt={`${comment.memberCreator.fullname} avatar`} />
                                     </div> */}
-                                    <div className="fallback-avatar">
-                                        <span>{comment.memberCreator.initials}</span>
-                                    </div>
+                                        <div className="fallback-avatar">
+                                            <span>{comment.memberCreator.initials}</span>
+                                        </div>
 
-                                    <div className="comment-info">
-                                        <span className="comment-author">{comment.memberCreator.fullName}</span>
-                                        <span className="comment-date">{formatDate(comment.date)}</span>
-                                    </div>
+                                        <div className="comment-info">
+                                            <span className="comment-author">{comment.memberCreator.fullName}</span>
+                                            <span className="comment-date">{formatDate(comment.date)}</span>
+                                        </div>
 
-                                    <div></div>
+                                        <div></div>
 
-                                    <div key={comment}>
-                                        {
-                                            (!isThisCommentEditing) &&
-                                            <div>
-                                                <div
-                                                    className="comment editable"
-                                                    onClick={() => {
-                                                        setEditingCommentId(comment._id)
-                                                        setCommentText(comment.data.text)
-                                                        setIsAddingNewComment(false)
-                                                    }}
-                                                >
-                                                    <span>{comment.data.text}</span>
-                                                </div>
-
-                                                <button
-                                                    className="comment-btn"
-                                                    onClick={() => {
-                                                        setEditingCommentId(comment._id)
-                                                        setCommentText(comment.data.text)
-                                                    }}
-                                                >
-                                                    Edit
-                                                </button>
-                                                <span>•</span>
-                                                <button className="comment-btn" onClick={() => onRemoveAction(comment._id)}>Delete</button>
-                                            </div>
-                                        }
-                                        {
-                                            isThisCommentEditing && <form onSubmit={(ev) => onActionSubmit(ev, comment._id)}>
-                                                <textarea
-                                                    ref={commentTextareaRef}
-                                                    className="edit-textarea"
-                                                    name="comment"
-                                                    value={commentText}
-                                                    onChange={handleChange}
-                                                    placeholder="Write a comment...">
-                                                </textarea>
-                                                <div className="edit-comment-actions edit-description-actions">
-                                                    <button
-                                                        className="btn-primary"
-                                                        type="submit"
-                                                    >
-                                                        Save
-                                                    </button>
-                                                    <button
-                                                        className="dynamic-btn"
-                                                        type="button"
+                                        <div key={comment}>
+                                            {
+                                                (!isThisCommentEditing) &&
+                                                <div>
+                                                    <div
+                                                        className="comment editable"
                                                         onClick={() => {
-                                                            setCommentText("")
-                                                            setEditingCommentId(null)
+                                                            setEditingCommentId(comment._id)
+                                                            setCommentText(comment.data.text)
+                                                            setIsAddingNewComment(false)
                                                         }}
                                                     >
-                                                        Cancel
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        }
-                                    </div>
-                                </React.Fragment>
-                            )
-                        })
+                                                        <span>{comment.data.text}</span>
+                                                    </div>
 
-                        }
-                    </section>
-                </aside>
-            </div>
-        </dialog>
+                                                    <button
+                                                        className="comment-btn"
+                                                        onClick={() => {
+                                                            setEditingCommentId(comment._id)
+                                                            setCommentText(comment.data.text)
+                                                        }}
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                    <span>•</span>
+                                                    <button className="comment-btn" onClick={() => onRemoveAction(comment._id)}>Delete</button>
+                                                </div>
+                                            }
+                                            {
+                                                isThisCommentEditing && <form onSubmit={(ev) => onActionSubmit(ev, comment._id)}>
+                                                    <textarea
+                                                        ref={commentTextareaRef}
+                                                        className="edit-textarea"
+                                                        name="comment"
+                                                        value={commentText}
+                                                        onChange={handleChange}
+                                                        placeholder="Write a comment...">
+                                                    </textarea>
+                                                    <div className="edit-comment-actions edit-description-actions">
+                                                        <button
+                                                            className="btn-primary"
+                                                            type="submit"
+                                                        >
+                                                            Save
+                                                        </button>
+                                                        <button
+                                                            className="dynamic-btn"
+                                                            type="button"
+                                                            onClick={() => {
+                                                                setCommentText("")
+                                                                setEditingCommentId(null)
+                                                            }}
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            }
+                                        </div>
+                                    </React.Fragment>
+                                )
+                            })
+
+                            }
+                        </section>
+                    </aside>
+                </div>
+            </DialogContent>
+        </Dialog>
     )
 }
