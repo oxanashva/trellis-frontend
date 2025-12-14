@@ -1,9 +1,6 @@
 import { useState } from "react"
-import { coverColorsMap, makeId } from "../../services/util.service"
+import { coverColorsMap, getAverageColor, makeId } from "../../services/util.service"
 import { ImgUploader } from "../ImgUploader"
-
-import { FastAverageColor } from "fast-average-color"
-const fac = new FastAverageColor()
 
 export function CoverPicker({ task, onUpdateTask }) {
     const [selectedColorKey, setSelectedColorKey] = useState(task?.cover?.coverColor || null)
@@ -54,14 +51,7 @@ export function CoverPicker({ task, onUpdateTask }) {
     async function handleImageUploaded(imgUrl, fileName, format) {
         const idAttachmentCover = makeId()
 
-        let edgeColor = ""
-        try {
-            const color = await fac.getColorAsync(imgUrl)
-            edgeColor = color.hex
-        } catch (error) {
-            console.error("Could not calculate average color:", error)
-            edgeColor = "#ffffff"
-        }
+        const edgeColor = await getAverageColor(imgUrl)
 
         const newAttachment = {
             _id: idAttachmentCover,

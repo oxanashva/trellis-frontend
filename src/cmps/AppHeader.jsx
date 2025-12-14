@@ -1,18 +1,20 @@
-import { Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { useNavigate, useLocation } from 'react-router'
 import { useSelector } from 'react-redux'
+import { getContrastingTextColor } from '../services/util.service'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 import { logout } from '../store/actions/user.actions'
-import MegaphoneIcon from '../assets/images/icons/megaphone.svg?react'
-import BellIcon from '../assets/images/icons/bell.svg?react'
-import HelpIcon from '../assets/images/icons/help.svg?react'
-import TrelloIcon from '../assets/images/icons/trello.svg?react'
+import TrellisIcon from '../assets/images/icons/trellis.svg?react'
 import osAvatarImg from '../assets/images/avatars/OS-avatar.png'
 
 export function AppHeader() {
 	// const user = useSelector(storeState => storeState.userModule.user)
 	const navigate = useNavigate()
 	const { pathname } = useLocation()
+
+	const board = useSelector(storeState => storeState.boardModule.board)
+	const boardBgColor = board?.prefs?.background
+	const fontColor = boardBgColor ? getContrastingTextColor(boardBgColor) : 'black'
 
 	async function onLogout() {
 		try {
@@ -27,14 +29,24 @@ export function AppHeader() {
 	const isHomePage = pathname.includes('/home')
 	const isWorkspacePage = pathname.includes('/workspace')
 	const isBoardPage = pathname.includes('/board')
-	const headerStyle = `app-header full ${isBoardPage ? 'board-header' : isHomePage ? 'home-header' : ''}`
+	const headerClassName = `app-header full ${isHomePage ? 'home-header' : ''}`
+	const headerStyle = isBoardPage
+		? {
+			backgroundColor: boardBgColor,
+			color: fontColor
+		}
+		: {}
+
+	const darckModeBtnStyle = {
+		color: fontColor
+	}
 
 	return (
-		<header className={headerStyle}>
+		<header style={headerStyle} className={headerClassName}>
 			<nav>
 				<NavLink to="/" className="logo">
-					<TrelloIcon width={24} height={24} fill="currentColor" />
-					<span>Trellist</span>
+					<TrellisIcon width={24} height={24} fill="currentColor" />
+					<span>Trellis</span>
 				</NavLink>
 
 				{isHomePage &&
@@ -51,20 +63,16 @@ export function AppHeader() {
 				{(isWorkspacePage || isBoardPage) &&
 					<>
 						<div className="actions">
-							<input type="text" placeholder="Search" />
-							<button className="btn-secondary">Create</button>
+							<input className="search-input" type="text" placeholder="Search" />
+							<button
+								style={darckModeBtnStyle}
+								className="btn-secondary create-btn"
+							>
+								Create
+							</button>
 						</div>
 
 						<div className="btn-group">
-							<button className="dynamic-btn icon-btn" title="Share your thoughts on Trellist">
-								<MegaphoneIcon width={16} height={16} fill="currentColor" />
-							</button>
-							<button className="dynamic-btn icon-btn" title="Notifications">
-								<BellIcon width={16} height={16} fill="currentColor" />
-							</button>
-							<button className="dynamic-btn icon-btn" title="Information">
-								<HelpIcon width={16} height={16} fill="currentColor" />
-							</button>
 							<button className="dynamic-btn icon-btn" title="Oxana Shvartsman (oxanashvartsman)" >
 								<img src={osAvatarImg} alt="Oxana Shvartsman" width={16} height={16} />
 							</button>

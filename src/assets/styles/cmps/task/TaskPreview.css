@@ -24,7 +24,12 @@
         background-color: #e4e4e4;
         border-top-left-radius: 0.5rem;
         border-top-right-radius: 0.5rem;
+        object-fit: cover;
         overflow: hidden;
+
+        &>img {
+            width: 100%;
+        }
     }
 
     & .cover-color {

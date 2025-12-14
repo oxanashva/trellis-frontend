@@ -7,48 +7,72 @@ import MinusIcon from '../../assets/images/icons/minus.svg?react'
 import PlusIcon from '../../assets/images/icons/plus.svg?react'
 import ColorsImg from '../../assets/images/colors.png'
 
-import { gradientColorsMap } from '../../services/util.service'
-import { cloudinaryGradientColorsMap } from '../../services/util.service'
+import { cloudinaryGradientColorsMap, darkenRgb, getAverageColor, gradientColorsMap, makeId } from '../../services/util.service'
 
 import { ImgUploader } from '../ImgUploader'
 
-import { FastAverageColor } from "fast-average-color"
-const fac = new FastAverageColor()
-
-export function BoardPicker({ setStarred, isStarred, prefs, onUpdateBoard, onRemoveBoard, handleSmallPicker }) {
+export function BoardPicker({ setStarred, isStarred, prefs, uploadedImages, onUpdateBoard, onRemoveBoard }) {
     const [isEditingBoardBackground, setIsEditingBoardBackground] = useState(false)
     const [isEditingColors, setIsEditingColors] = useState(false)
 
     async function handleImageUploaded(imgUrl, fileName, format) {
-        let background = ""
-        try {
-            const color = await fac.getColorAsync(imgUrl)
-            background = color.hex
-        } catch (error) {
-            console.error("Could not calculate average color:", error)
-            background = "#ffffff"
-        }
+        const background = await getAverageColor(imgUrl)
 
-        const newPrefs = {
+        const uploadedImgId = makeId()
+
+        const updatedFields = {
             prefs: {
+                _id: uploadedImgId,
                 background,
                 backgroundImage: imgUrl,
-            }
+            },
+            uploadedImages: [
+                ...(uploadedImages || []),
+                {
+                    _id: uploadedImgId,
+                    name: fileName,
+                    url: imgUrl
+                }
+            ]
         }
 
-        onUpdateBoard(newPrefs)
-        setIsEditingBoardBackground(false)
+        onUpdateBoard(updatedFields)
     }
 
-    function handleBackgroundChanged(bgName) {
-        onUpdateBoard({ prefs: { background: bgName } })
-        setIsEditingColors(false)
-        handleSmallPicker(true)
+    async function handleSelectUploadedImage(img) {
+        const background = await getAverageColor(img.url)
+
+        onUpdateBoard({
+            prefs: {
+                backgroundImage: img.url,
+                _id: img._id,
+                background
+            }
+        })
     }
+
+    async function handleBackgroundChanged(bgName) {
+        const imgUrl = cloudinaryGradientColorsMap[bgName]
+
+        const color = await getAverageColor(imgUrl)
+        const background = darkenRgb(color)
+
+        onUpdateBoard({
+            prefs: {
+                background,
+                backgroundImage: imgUrl
+            }
+        })
+
+        setIsEditingColors(false)
+    }
+
 
     const boardImgUrl = prefs?.backgroundImage
         ? prefs?.backgroundImage
         : cloudinaryGradientColorsMap[prefs?.background]
+
+    const isCustomImageSelected = prefs?.backgroundImage && !cloudinaryGradientColorsMap[prefs?.background]
 
     const starBtnStyle = isStarred ? { color: '#FBC828' } : {}
 
@@ -60,43 +84,47 @@ export function BoardPicker({ setStarred, isStarred, prefs, onUpdateBoard, onRem
                         <h2 className="picker-title">Colors</h2>
                     </header>
 
-                    <ul>
-                        <li>
-                            <button
-                                className="action-btn"
-                                onClick={setStarred}
-                            >
-                                <span style={starBtnStyle} className="action-btn-icon">
-                                    {isStarred
-                                        ? <StarSolidIcon width={16} height={16} />
-                                        : <StarIcon width={16} height={16} />}
-                                </span>
-                                <span>Star</span>
-                            </button>
-                        </li>
-                        <li>
-                            <button
-                                className="action-btn"
-                                onClick={() => setIsEditingBoardBackground(true)}
-                            >
-                                <span className="action-btn-img">
-                                    <img src={boardImgUrl} alt="Board Image" />
-                                </span>
-                                <span>Change background</span>
-                            </button>
-                        </li>
-                        <li>
-                            <button
-                                className="action-btn"
-                                onClick={onRemoveBoard}
-                            >
-                                <span className="action-btn-icon">
-                                    <MinusIcon width={16} height={16} />
-                                </span>
-                                <span>Remove board</span>
-                            </button>
-                        </li>
-                    </ul>
+                    <div className="board-editor">
+                        <ul>
+                            <li>
+                                <button
+                                    className="action-btn"
+                                    onClick={setStarred}
+                                >
+                                    <span style={starBtnStyle} className="action-btn-icon">
+                                        {isStarred
+                                            ? <StarSolidIcon width={16} height={16} />
+                                            : <StarIcon width={16} height={16} />}
+                                    </span>
+                                    <span>Star</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="action-btn"
+                                    onClick={() => setIsEditingBoardBackground(true)}
+                                >
+                                    <span
+                                        style={{ backgroundImage: `url(${boardImgUrl})` }}
+                                        className="action-btn-img"
+                                    >
+                                    </span>
+                                    <span>Change background</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="action-btn"
+                                    onClick={onRemoveBoard}
+                                >
+                                    <span className="action-btn-icon">
+                                        <MinusIcon width={16} height={16} />
+                                    </span>
+                                    <span>Remove board</span>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
                 </>
             }
 
@@ -120,7 +148,7 @@ export function BoardPicker({ setStarred, isStarred, prefs, onUpdateBoard, onRem
                                 {(imgData, isUploading) => (
                                     <>
                                         {isUploading ? (
-                                            <div className="loader-container">
+                                            <div className="loader-container change-bg-loader">
                                                 <div className="loader small-loader"></div>
                                             </div>
                                         ) : (
@@ -135,22 +163,43 @@ export function BoardPicker({ setStarred, isStarred, prefs, onUpdateBoard, onRem
                                     </>
                                 )}
                             </ImgUploader>
-                            <span>Custom</span>
+                            <span className="change-bg-btn-name">Custom</span>
                         </li>
                         <li className="change-bg-item">
-                            <button
-                                className="change-bg-btn"
+                            <input
+                                type="button"
+                                style={{ backgroundImage: `url(${ColorsImg})` }}
+                                className="change-bg-btn colors-btn"
                                 onClick={() => {
                                     setIsEditingColors(true)
                                     setIsEditingBoardBackground(false)
-                                    handleSmallPicker(false)
                                 }}
                             >
-                                <img src={ColorsImg} alt="Colors" />
-                            </button>
-                            <span>Colors</span>
+                            </input>
+                            <span className="change-bg-btn-name">Colors</span>
                         </li>
                     </ul>
+                    {isCustomImageSelected && (
+                        <div className="preview-uploaded-imgs">
+                            {uploadedImages?.map(img => {
+                                const isSelected = prefs?.backgroundImage === img.url;
+                                return (
+                                    <div
+                                        className="uploaded-img-wrapper"
+                                        key={img._id}
+                                    >
+                                        <div
+                                            className={`preview-uploaded-img ${isSelected ? 'selected' : ''}`}
+                                            style={{ backgroundImage: `url(${img.url})` }}
+                                            onClick={() => handleSelectUploadedImage(img)}
+                                        >
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
+
                 </>
             }
 
@@ -162,7 +211,6 @@ export function BoardPicker({ setStarred, isStarred, prefs, onUpdateBoard, onRem
                             className="icon-btn dynamic-btn previous-btn"
                             onClick={() => {
                                 setIsEditingColors(false)
-                                handleSmallPicker(true)
                             }}>
                             <ShevronLeft width={16} height={16} fill="currentColor" />
                         </button>

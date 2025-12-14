@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    overflow-y: hidden;
 
     & .previous-btn {
         position: absolute;
@@ -10,7 +11,8 @@
     }
 
     & .board-editor {
-        padding: 0.75rem;
+        padding-inline: 0.75rem;
+        padding-block-end: 0.75rem;
         overflow-y: auto;
 
         &::-webkit-scrollbar-track {
@@ -30,6 +32,10 @@
         &::-webkit-scrollbar-button {
             display: none;
         }
+
+        &>ul {
+            margin: 0;
+        }
     }
 
     & .change-bg-actions {
@@ -44,15 +50,62 @@
 
     & .change-bg-btn {
         width: 100%;
-        height: 96px;
+        height: 90px;
         padding: 0;
-        margin-block-end: 0.5rem;
         border-radius: 0.5rem;
         overflow: hidden;
 
         &:hover {
-            background-color: var(--background-neutral);
-            opacity: 0.8;
+            opacity: 0.7;
+        }
+    }
+
+    & .change-bg-loader {
+        display: grid;
+        place-items: center;
+        height: 90px;
+    }
+
+    & .colors-btn {
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+    }
+
+    & .change-bg-btn-name {
+        display: block;
+        text-align: center;
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 20px;
+        margin-block-start: 0.5rem;
+    }
+
+    & .preview-uploaded-imgs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+        padding-inline: 0.75rem;
+        padding-block-end: 0.75rem;
+    }
+
+    & .uploaded-img-wrapper {
+        height: 90px;
+        padding-inline: 0.25rem;
+        margin-inline: -0.25rem;
+        border-radius: 0.25rem;
+    }
+
+    & .preview-uploaded-img {
+        height: 90px;
+        border-radius: 0.25rem;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+        overflow: hidden;
+
+        &.selected {
+            border: 2px solid var(--primary);
         }
     }
 
@@ -73,22 +126,14 @@
             height: 20px;
             border-radius: 0.25rem;
             margin-inline-end: 0.75rem;
-            object-fit: cover;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center center;
             overflow: hidden;
         }
 
         &:hover {
             background-color: var(--background-neutral);
-        }
-    }
-
-    & .change-bg-item {
-        height: 96px;
-
-        &>span {
-            font-size: 0.875rem;
-            font-weight: 400;
-            line-height: 20px;
         }
     }
 

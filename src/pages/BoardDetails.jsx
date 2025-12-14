@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Outlet, useNavigate, useParams } from 'react-router'
 import { useSelector } from 'react-redux'
 
@@ -12,15 +12,13 @@ import { DragOverlayWrapper } from '../cmps/DragOverlayWrapper'
 
 import { useFocusOnStateChange } from '../customHooks/useFocusOnStateChange'
 
-import osAvatarImg from '../assets/images/avatars/OS-avatar.png'
-import acAvatarImg from '../assets/images/avatars/AC-avatar.png'
 import FilterIcon from '../assets/images/icons/filter.svg?react'
 import StarIcon from '../assets/images/icons/star.svg?react'
 import StarSolidIcon from '../assets/images/icons/star-solid.svg?react'
 import UserPlusIcon from '../assets/images/icons/user-plus.svg?react'
 import MoreIcon from '../assets/images/icons/more.svg?react'
 
-import { cloudinaryGradientColorsMap } from '../services/util.service'
+import { addOpacity, cloudinaryGradientColorsMap, getContrastingTextColor } from '../services/util.service'
 
 import { GroupList } from '../cmps/group/GroupList'
 import { Loader } from '../cmps/Loader'
@@ -34,6 +32,9 @@ export function BoardDetails() {
 
     const [boardName, setBoardName] = useState('')
     const [isEditing, setIsEditing] = useState(false)
+    const [titleWidth, setTitleWidth] = useState(0)
+    const h1Ref = useRef(null)
+    const inputRef = useFocusOnStateChange(isEditing)
 
     const [anchorEl, setAnchorEl] = useState(null)
     const openPopover = Boolean(anchorEl)
@@ -45,7 +46,6 @@ export function BoardDetails() {
 
     const [activeId, setActiveId] = useState(null)
 
-    const inputRef = useFocusOnStateChange(isEditing)
 
     const PICKER_MAP = {
         BOARD: {
@@ -78,6 +78,7 @@ export function BoardDetails() {
     function handleInputBlur() {
         updateBoard({ ...board, name: boardName })
         setIsEditing(false)
+        setTitleWidth(null)
     }
 
     function handleInput({ target }) {
@@ -93,6 +94,8 @@ export function BoardDetails() {
             setBoardName(board.name)
             setIsEditing(false)
         }
+
+        setTitleWidth(null)
     }
 
     const handlePopoverOpen = (event, pickerType) => {
@@ -301,28 +304,43 @@ export function BoardDetails() {
         backgroundRepeat: 'no-repeat'
     }
 
+    const boardBgColor = board?.prefs?.background
+    const fontColor = getContrastingTextColor(boardBgColor)
+
+    const boardDetailsHeaderStyle = {
+        color: fontColor,
+        backgroundColor: boardBgColor && addOpacity(boardBgColor),
+    }
+
     const starBtnStyle = board?.isStarred ? { color: '#FBC828' } : {}
 
     if (isLoading) return <Loader />
 
+
     return (
         <>
             <section style={boardDetailsStyle} className="board-details full">
-                <header className="board-details-header">
+                <header style={boardDetailsHeaderStyle} className="board-details-header">
                     <div>
                         {/* TODO: implement reusable component for editable field */}
                         {!isEditing &&
                             <h1
+                                ref={h1Ref}
                                 className="board-title"
-                                onClick={() => setIsEditing(true)}
+                                onClick={() => {
+                                    setIsEditing(true),
+                                        setTitleWidth(h1Ref?.current?.offsetWidth)
+                                }}
                                 title="Edit board name"
                             >
                                 {boardName}
                             </h1>
                         }
+
                         {isEditing &&
                             <input
                                 ref={inputRef}
+                                style={titleWidth ? { width: `${titleWidth + 4}px` } : {}}
                                 className="board-title"
                                 type="text"
                                 value={boardName}
@@ -334,17 +352,22 @@ export function BoardDetails() {
                     </div>
                     <div className="btn-group">
                         <div className="avatar-btn-group">
-                            {/* TODO: Render avatars based on board data */}
-                            <button className="dynamic-btn icon-btn avatar-btn" title="Oxana Shvartsman (oxanashvartsman)" >
-                                <img src={osAvatarImg} alt="Oxana Shvartsman" width={16} height={16} />
-                            </button>
-                            <button className="dynamic-btn icon-btn avatar-btn" title="Anna Coss (annacoss)" >
-                                <img src={acAvatarImg} alt="Anna Coss" />
-                            </button>
+                            {board?.members?.map(m => (
+                                <button
+                                    key={m._id}
+                                    className="dynamic-btn icon-btn avatar-btn"
+                                    title={`${m.fullname} (${m.username})`}
+                                >
+                                    <span style={{ backgroundImage: `url(${m.avatarUrl})` }}></span>
+                                </button>
+                            ))}
                         </div>
-                        <button className="dynamic-btn icon-btn action-dynamic-btn">
+
+                        {/* TODO: implement filter */}
+                        {/* <button className="dynamic-btn icon-btn action-dynamic-btn">
                             <FilterIcon width={16} height={16} fill="currentColor" />
-                        </button>
+                        </button> */}
+
                         <button
                             style={starBtnStyle}
                             className="dynamic-btn icon-btn action-dynamic-btn"
@@ -354,10 +377,13 @@ export function BoardDetails() {
                                 ? <StarSolidIcon width={16} height={16} fill="currentColor" />
                                 : <StarIcon width={16} height={16} fill="currentColor" />}
                         </button>
-                        <button className="btn-highlighted">
+
+                        {/* TODO: implement share */}
+                        {/* <button className="btn-highlighted">
                             <UserPlusIcon width={16} height={16} fill="currentColor" />
                             <span>Share</span>
-                        </button>
+                        </button> */}
+
                         <button
                             className="dynamic-btn icon-btn action-dynamic-btn"
                             onClick={(event) => {
@@ -413,6 +439,7 @@ export function BoardDetails() {
                     setStarred={setStarred}
                     isStarred={board?.isStarred}
                     prefs={board?.prefs}
+                    uploadedImages={board?.uploadedImages}
                     onUpdateBoard={onUpdateBoard}
                     onRemoveBoard={onRemoveBoard}
                 />

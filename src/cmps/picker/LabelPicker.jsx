@@ -3,12 +3,6 @@ import { labelsColorsMap, defaultLabelsColorMap, makeId } from "../../services/u
 import ShevronLeft from '../../assets/images/icons/shevron-left.svg?react'
 import PenIcon from "../../assets/images/icons/pen.svg?react"
 
-const allAvailableLabels = Object.keys(labelsColorsMap).map((colorKey, idx) => ({
-    _id: makeId(),
-    name: "",
-    color: colorKey,
-}))
-
 const defaultLabels = Object.keys(defaultLabelsColorMap).map((colorKey, idx) => ({
     _id: makeId(),
     name: "",
@@ -41,7 +35,7 @@ export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onR
         onUpdateTask(task.idBoard, { ...task, idLabels: newSelectedLabels })
     }
 
-    function createLabel() {
+    async function createLabel() {
         const newLabel = {
             _id: makeId(),
             idBoard: task.idBoard,
@@ -51,42 +45,50 @@ export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onR
 
         const newSelectedLabels = [...selectedLabels, newLabel._id]
 
-        onAddLabel(newLabel)
-        onUpdateTask(task.idBoard, {
-            ...task,
-            labels: [...task.labels, newLabel],
-            idLabels: newSelectedLabels
-        })
         setSelectedLabels(newSelectedLabels)
         setHasLabels(true)
         setIsCreating(false)
         setLabelName("")
         setSelectedColorKey(null)
+
+        await onAddLabel(newLabel)
+        await onUpdateTask(task.idBoard, {
+            labels: [...task.labels, newLabel],
+            idLabels: newSelectedLabels
+        })
     }
 
-    function editLabel() {
+    async function editLabel() {
         const updatedLabel = {
             ...labelToEdit,
             name: labelName,
             color: selectedColorKey,
         }
-        onUpdateLabel(updatedLabel)
         setIsEditing(false)
         setLabelName("")
         setLabelToEdit(null)
         setSelectedColorKey(null)
-        onUpdateTask(task.idBoard, { ...task, labels: task.labels.map(l => l._id === updatedLabel._id ? updatedLabel : l) })
+        await onUpdateLabel(updatedLabel)
+        await onUpdateTask(task.idBoard, {
+            ...task,
+            labels: task.labels.map(l => l._id === updatedLabel._id ? updatedLabel : l),
+            idLabels: task.idLabels.filter(l => l !== updatedLabel._id)
+        })
     }
 
-    function removeLabel(labelId) {
+    async function removeLabel(labelId) {
         const newLabels = task.labels.filter(l => l._id !== labelId)
-        onRemoveLabel(labelId)
         setIsEditing(false)
         setLabelName("")
         setLabelToEdit(null)
         setSelectedColorKey(null)
-        onUpdateTask(task.idBoard, { ...task, labels: task.labels.filter(l => l._id !== labelId) })
         setHasLabels(newLabels.length > 0)
+        await onUpdateTask(task.idBoard, {
+            ...task,
+            labels: task.labels.filter(l => l._id !== labelId),
+            idLabels: task.idLabels.filter(l => l !== labelId)
+        })
+        await onRemoveLabel(labelId)
     }
 
     return (
@@ -124,7 +126,7 @@ export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onR
                                             type="checkbox"
                                             name="label"
                                             checked={isLabelSelected}
-                                            onClick={() => handleLabelToggle(label._id)}
+                                            onChange={() => handleLabelToggle(label._id)}
                                         />
                                         <span className="label-checkbox">
                                             <span style={{ backgroundColor: labelHexColor }} className="label-box">{label.name}</span>
@@ -162,7 +164,7 @@ export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onR
                                             name="label"
                                             id={label._id}
                                             checked={isLabelSelected}
-                                            onClick={() => handleLabelToggle(label._id)}
+                                            onChange={() => handleLabelToggle(label._id)}
                                         />
                                         <span className="label-checkbox">
                                             <span style={{ backgroundColor: labelHexColor }} className="label-box">{label.name}</span>

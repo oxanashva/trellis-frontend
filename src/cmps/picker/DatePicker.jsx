@@ -10,6 +10,8 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar"
 import CheckboxCheckIcon from "../../assets/images/icons/checkbox-check.svg?react"
 
 export function DatePicker({ task, onClose, onUpdateTask }) {
+    // TODO: implement start date support and range calendar
+
     const initialState = {
         isStartDateSet: task.start ? true : false,
         startDate: createDate(task.start),
@@ -89,6 +91,9 @@ export function DatePicker({ task, onClose, onUpdateTask }) {
                             },
                             "& .MuiSvgIcon-root": {
                                 height: "1.125rem",
+                            },
+                            "& .MuiPickersArrowSwitcher-button": {
+                                paddingInline: "5px",
                             }
                         }}
                     />
@@ -107,7 +112,7 @@ export function DatePicker({ task, onClose, onUpdateTask }) {
             </header>
 
 
-            <div className="date-range">
+            <div className="date-editor">
                 <form onSubmit={onSubmit}>
                     <div className="calendar-container">
                         <div className="date-field-container">
@@ -151,6 +156,10 @@ export function DatePicker({ task, onClose, onUpdateTask }) {
                                 {renderCalendar("dueDate")}
                             </fieldset>
                         </div>
+
+                        {/* TODO: add start date support or implement range calendar */}
+                        {/* <div className="divider"></div>
+
                         <div className="date-field-container">
                             <fieldset>
                                 <legend className="picker-subtitle">Start Date</legend>
@@ -181,7 +190,7 @@ export function DatePicker({ task, onClose, onUpdateTask }) {
                                 </div>
                                 {renderCalendar("startDate")}
                             </fieldset>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="action-btns">
                         <button

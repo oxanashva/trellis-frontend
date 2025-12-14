@@ -21,26 +21,15 @@ export function ImgUploader({ onUploaded = null, children }) {
         onUploaded && onUploaded(secure_url, original_filename, format)
     }
 
-    const fileInputStyle = {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        rigth: 0,
-        bottom: 0,
-        opacity: 0,
-        zIndex: 100
-    }
-
     return (
-        <div>
+        <div className="img-uploader">
             <label
-                style={{ position: 'relative' }}
                 onDrop={uploadImg}
                 onDragOver={ev => ev.preventDefault()}
             >
                 <input
+                    className="img-uploader-input"
                     type="file"
-                    style={fileInputStyle}
                     onChange={uploadImg} accept="img/*"
                 />
                 {children && children(imgData, isUploading)}

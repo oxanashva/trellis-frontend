@@ -8,8 +8,9 @@ export const board = {
     "url": "https://trello.com/b/VJFx5D4Z/trelgroup-agile-sprint-board",
     "shortUrl": "https://trello.com/b/VJFx5D4Z",
     "prefs": {
-        "background": "#98a07e",
-        "backgroundImage": "https://res.cloudinary.com/da9naclpy/image/upload/v1765289171/gfuyec2wk0jfnivhahcs.webp"
+        "uploadedImgId": "7ofx4p",
+        "background": "rgb(152,160,126)",
+        "backgroundImage": "https://res.cloudinary.com/da9naclpy/image/upload/v1765735195/e4a2w4i2yfvs5unrjetq.webp"
     },
     "shortLink": "VJFx5D4Z",
     "labelNames": {
@@ -852,7 +853,7 @@ export const board = {
             "url": "https://trello.com/c/7z0gKw0n/18-product-owner-brian",
             "cover": {
                 "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765219243/aercq9pxdzic5wmzoeem.jpg",
-                "edgeColor": "#d4d7dc",
+                "edgeColor": "rgb(212, 215, 220)",
                 "idAttachment": "hVRlWC"
             },
             "isTemplate": false,
@@ -1419,16 +1420,6 @@ export const board = {
                     "mimeType": "image/png",
                     "name": "npm.png",
                     "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765196831/gxe6lrpd3ryspopgap8x.png"
-                },
-                {
-                    "_id": "6Mu56V",
-                    "date": 1765212090730,
-                    "edgeColor": "#4d863b",
-                    "idMember": "",
-                    "isUpload": true,
-                    "mimeType": "image/webp",
-                    "name": "bug.webp",
-                    "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765212088/amcmf5kpmdwi7mifiva9.webp"
                 }
             ],
             "address": null,
@@ -1819,7 +1810,7 @@ export const board = {
             "urlSourceText": null,
             "cover": {
                 "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765219365/lo6svl2txcgyjj5vzpen.jpg",
-                "edgeColor": "#231517",
+                "edgeColor": "rgb(35, 21, 23)",
                 "idAttachment": "qDYCU9"
             },
             "isTemplate": false,
@@ -2218,8 +2209,8 @@ export const board = {
             "urlSource": null,
             "urlSourceText": null,
             "cover": {
-                "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765222458/kuioh8yskl9lqyc7grzf.webp",
-                "edgeColor": "#4d863b",
+                "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765213770/dmhm530s5tpxvxc1tyqq.webp",
+                "edgeColor": "rgb(77, 134, 59)",
                 "idAttachment": "7KOCcz"
             },
             "isTemplate": false,
@@ -2531,7 +2522,7 @@ export const board = {
                     "isUpload": true,
                     "mimeType": "image/webp",
                     "name": "bug.webp",
-                    "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765222458/kuioh8yskl9lqyc7grzf.webp"
+                    "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765213770/dmhm530s5tpxvxc1tyqq.webp"
                 }
             ],
             "pluginData": [],
@@ -2911,8 +2902,8 @@ export const board = {
             "start": null,
             "url": "https://trello.com/c/xVXUQDxX/17-%F0%9F%91%8D-sprint-review-%F0%9F%91%8E",
             "cover": {
-                "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765222908/slatnuc17ifxoxjigxon.jpg",
-                "edgeColor": "#a9a399",
+                "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765222435/fpxpgw2dvmozfmkehw7i.jpg",
+                "edgeColor": "rgb(169, 163, 153)",
                 "idAttachment": "QljSnV"
             },
             "isTemplate": false,
@@ -2925,7 +2916,7 @@ export const board = {
                     "isUpload": true,
                     "mimeType": "image/jpg",
                     "name": "sprint-review.jpg",
-                    "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765222908/slatnuc17ifxoxjigxon.jpg"
+                    "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765222435/fpxpgw2dvmozfmkehw7i.jpg"
                 }
             ],
             "customFieldItems": [],
@@ -3273,7 +3264,7 @@ export const board = {
     "members": [
         {
             "_id": "68e809da40f4d09300719d2d",
-            "avatarUrl": "https://trello-members.s3.amazonaws.com/68e809da40f4d09300719d2d/43a38a5d4fdb6b1a3be4c2229d5ae402",
+            "avatarUrl": "https://res.cloudinary.com/da9naclpy/image/upload/v1765662608/AC-avatar_rymgnn.png",
             "bio": "",
             "confirmed": true,
             "fullName": "Anna Coss",
@@ -3285,7 +3276,7 @@ export const board = {
         },
         {
             "_id": "5eafad22c718790469a3db7a",
-            "avatarUrl": "https://trello-members.s3.amazonaws.com/5eafad22c718790469a3db7a/d17b40d037a634eac9c53310f9546929",
+            "avatarUrl": "https://res.cloudinary.com/da9naclpy/image/upload/v1765662607/OS-avatar_nr1jfr.png",
             "bio": "",
             "confirmed": true,
             "fullName": "Oxana Shvartzman",
@@ -3454,6 +3445,28 @@ export const board = {
             "memberType": "admin",
             "unconfirmed": false,
             "deactivated": false
+        }
+    ],
+    "uploadedImages": [
+        {
+            "uploadedImgId": "uVv8Nd",
+            "name": "stars",
+            "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765735106/z5i5uutrebrvp4b28uho.jpg"
+        },
+        {
+            "uploadedImgId": "tF8d5I",
+            "name": "field",
+            "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765735150/gdhwp60ichb2gxadyls0.jpg"
+        },
+        {
+            "uploadedImgId": "ot1KjC",
+            "name": "sea",
+            "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765735160/sb3amqlb22titi2gbtan.jpg"
+        },
+        {
+            "uploadedImgId": "7ofx4p",
+            "name": "trellis",
+            "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765735195/e4a2w4i2yfvs5unrjetq.webp"
         }
     ]
 }

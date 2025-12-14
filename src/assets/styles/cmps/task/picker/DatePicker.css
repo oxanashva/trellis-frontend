@@ -1,6 +1,7 @@
 .date-picker {
+    overflow-y: hidden;
 
-    & .date-range {
+    & .date-editor {
         overflow-y: auto;
 
         &::-webkit-scrollbar-track {
@@ -22,9 +23,9 @@
         }
     }
 
-    & .calendar-container {
+    /* & .calendar-container {
         display: flex;
-    }
+    } */
 
     & .date-field-container,
     .action-btns {
@@ -73,8 +74,6 @@
 
     .calendar {
         margin-block-start: 1rem;
-        border: 1px solid #080F214A;
-        border-radius: 0.25rem;
     }
 
     & .divider {
@@ -132,6 +131,7 @@
 
     & .action-btns {
         display: flex;
+        flex-direction: column;
         gap: 0.5rem;
     }
 }
