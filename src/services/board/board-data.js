@@ -3263,7 +3263,7 @@ export const board = {
     "members": [
         {
             "_id": "68e809da40f4d09300719d2d",
-            "avatarUrl": "https://trello-members.s3.amazonaws.com/68e809da40f4d09300719d2d/43a38a5d4fdb6b1a3be4c2229d5ae402",
+            "avatarUrl": "https://res.cloudinary.com/da9naclpy/image/upload/v1765662608/AC-avatar_rymgnn.png",
             "bio": "",
             "confirmed": true,
             "fullName": "Anna Coss",
@@ -3275,7 +3275,7 @@ export const board = {
         },
         {
             "_id": "5eafad22c718790469a3db7a",
-            "avatarUrl": "https://trello-members.s3.amazonaws.com/5eafad22c718790469a3db7a/d17b40d037a634eac9c53310f9546929",
+            "avatarUrl": "https://res.cloudinary.com/da9naclpy/image/upload/v1765662607/OS-avatar_nr1jfr.png",
             "bio": "",
             "confirmed": true,
             "fullName": "Oxana Shvartzman",

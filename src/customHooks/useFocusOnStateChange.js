@@ -6,6 +6,7 @@ export const useFocusOnStateChange = (shouldFocus) => {
 
     useEffect(() => {
         if (shouldFocus && elementRef.current) {
+            elementRef.current.select()
             elementRef.current.focus()
         }
     }, [shouldFocus])
