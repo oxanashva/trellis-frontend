@@ -9,6 +9,9 @@ import Earth from "../assets/images/gradients/earth.svg?react"
 import Alien from "../assets/images/gradients/alien.svg?react"
 import Volcano from "../assets/images/gradients/volcano.svg?react"
 
+import { FastAverageColor } from "fast-average-color"
+const fac = new FastAverageColor()
+
 export function makeId(length = 6) {
     var txt = ''
     var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -185,19 +188,21 @@ export function addOpacity(rgbString, alpha = 0.8) {
     return `rgba(${values[0]}, ${values[1]}, ${values[2]}, ${alpha})`
 }
 
-export function darkenHex(hex, factor = 0.8) {
-    // hex → #RRGGBB
-    let r = parseInt(hex.substr(1, 2), 16)
-    let g = parseInt(hex.substr(3, 2), 16)
-    let b = parseInt(hex.substr(5, 2), 16)
+/**
+ * Darkens an rgb() color string by multiplying each channel by the factor.
+ * @param {string} rgbColor The rgb() string, e.g. 'rgb(200, 150, 100)'.
+ * @param {number} factor Multiplication factor (0–1). Default = 0.8.
+ * @returns {string} Darkened rgb() string.
+ */
+export function darkenRgb(rgbColor, factor = 0.8) {
+    const [r, g, b] = _getRgbComponents(rgbColor)
 
-    r = Math.floor(r * factor)
-    g = Math.floor(g * factor)
-    b = Math.floor(b * factor)
+    const newR = Math.floor(r * factor)
+    const newG = Math.floor(g * factor)
+    const newB = Math.floor(b * factor)
 
-    return `rgb(${r}, ${g}, ${b})`
+    return `rgb(${newR}, ${newG}, ${newB})`
 }
-
 
 /**
  * Parses an rgb() or rgba() string and returns the [R, G, B] components (0-255).
@@ -259,4 +264,14 @@ export const getContrastingTextColor = (backgroundColor) => {
     const LIGHT_TEXT_COLOR = 'white'
 
     return luminance < LUMINANCE_THRESHOLD ? LIGHT_TEXT_COLOR : DARK_TEXT_COLOR
+}
+
+export async function getAverageColor(imgUrl) {
+    try {
+        const color = await fac.getColorAsync(imgUrl)
+        return color.rgb
+    } catch (error) {
+        console.error("Could not calculate average color:", error)
+        return "#ffffff"
+    }
 }

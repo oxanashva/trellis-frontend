@@ -439,6 +439,7 @@ export function BoardDetails() {
                     setStarred={setStarred}
                     isStarred={board?.isStarred}
                     prefs={board?.prefs}
+                    uploadedImages={board?.uploadedImages}
                     onUpdateBoard={onUpdateBoard}
                     onRemoveBoard={onRemoveBoard}
                 />

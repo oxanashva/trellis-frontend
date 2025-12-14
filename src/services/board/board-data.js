@@ -8,8 +8,9 @@ export const board = {
     "url": "https://trello.com/b/VJFx5D4Z/trelgroup-agile-sprint-board",
     "shortUrl": "https://trello.com/b/VJFx5D4Z",
     "prefs": {
-        "background": "rgb(152, 160, 126)",
-        "backgroundImage": "https://res.cloudinary.com/da9naclpy/image/upload/v1765289171/gfuyec2wk0jfnivhahcs.webp"
+        "_id": "7ofx4p",
+        "background": "rgb(152,160,126)",
+        "backgroundImage": "https://res.cloudinary.com/da9naclpy/image/upload/v1765735195/e4a2w4i2yfvs5unrjetq.webp"
     },
     "shortLink": "VJFx5D4Z",
     "labelNames": {
@@ -3444,6 +3445,28 @@ export const board = {
             "memberType": "admin",
             "unconfirmed": false,
             "deactivated": false
+        }
+    ],
+    "uploadedImages": [
+        {
+            "_id": "uVv8Nd",
+            "name": "stars",
+            "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765735106/z5i5uutrebrvp4b28uho.jpg"
+        },
+        {
+            "_id": "tF8d5I",
+            "name": "field",
+            "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765735150/gdhwp60ichb2gxadyls0.jpg"
+        },
+        {
+            "_id": "ot1KjC",
+            "name": "sea",
+            "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765735160/sb3amqlb22titi2gbtan.jpg"
+        },
+        {
+            "_id": "7ofx4p",
+            "name": "trellis",
+            "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765735195/e4a2w4i2yfvs5unrjetq.webp"
         }
     ]
 }

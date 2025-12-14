@@ -60,6 +60,12 @@
         }
     }
 
+    & .change-bg-loader {
+        display: grid;
+        place-items: center;
+        height: 90px;
+    }
+
     & .colors-btn {
         background-repeat: no-repeat;
         background-size: cover;
@@ -73,6 +79,34 @@
         font-weight: 400;
         line-height: 20px;
         margin-block-start: 0.5rem;
+    }
+
+    & .preview-uploaded-imgs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+        padding-inline: 0.75rem;
+        padding-block-end: 0.75rem;
+    }
+
+    & .uploaded-img-wrapper {
+        height: 90px;
+        padding-inline: 0.25rem;
+        margin-inline: -0.25rem;
+        border-radius: 0.25rem;
+    }
+
+    & .preview-uploaded-img {
+        height: 90px;
+        border-radius: 0.25rem;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+        overflow: hidden;
+
+        &.selected {
+            border: 2px solid var(--primary);
+        }
     }
 
     & .action-btn {
@@ -92,7 +126,9 @@
             height: 20px;
             border-radius: 0.25rem;
             margin-inline-end: 0.75rem;
-            object-fit: cover;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center center;
             overflow: hidden;
         }
 

@@ -14,6 +14,7 @@ export function DynamicPicker({
     open,
     onClose,
     setStarred,
+    uploadedImages,
     isStarred,
     prefs,
     onUpdateBoard,
@@ -51,6 +52,7 @@ export function DynamicPicker({
                     setStarred={setStarred}
                     isStarred={isStarred}
                     prefs={prefs}
+                    uploadedImages={uploadedImages}
                     onUpdateBoard={onUpdateBoard}
                     onRemoveBoard={onRemoveBoard}
                     handleSmallPicker={handleSmallPicker}
