@@ -8,7 +8,7 @@ export const board = {
     "url": "https://trello.com/b/VJFx5D4Z/trelgroup-agile-sprint-board",
     "shortUrl": "https://trello.com/b/VJFx5D4Z",
     "prefs": {
-        "_id": "7ofx4p",
+        "uploadedImgId": "7ofx4p",
         "background": "rgb(152,160,126)",
         "backgroundImage": "https://res.cloudinary.com/da9naclpy/image/upload/v1765735195/e4a2w4i2yfvs5unrjetq.webp"
     },
@@ -853,7 +853,7 @@ export const board = {
             "url": "https://trello.com/c/7z0gKw0n/18-product-owner-brian",
             "cover": {
                 "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765219243/aercq9pxdzic5wmzoeem.jpg",
-                "edgeColor": "#d4d7dc",
+                "edgeColor": "rgb(212, 215, 220)",
                 "idAttachment": "hVRlWC"
             },
             "isTemplate": false,
@@ -1810,7 +1810,7 @@ export const board = {
             "urlSourceText": null,
             "cover": {
                 "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765219365/lo6svl2txcgyjj5vzpen.jpg",
-                "edgeColor": "#231517",
+                "edgeColor": "rgb(35, 21, 23)",
                 "idAttachment": "qDYCU9"
             },
             "isTemplate": false,
@@ -2210,7 +2210,7 @@ export const board = {
             "urlSourceText": null,
             "cover": {
                 "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765213770/dmhm530s5tpxvxc1tyqq.webp",
-                "edgeColor": "#4d863b",
+                "edgeColor": "rgb(77, 134, 59)",
                 "idAttachment": "7KOCcz"
             },
             "isTemplate": false,
@@ -2903,7 +2903,7 @@ export const board = {
             "url": "https://trello.com/c/xVXUQDxX/17-%F0%9F%91%8D-sprint-review-%F0%9F%91%8E",
             "cover": {
                 "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765222435/fpxpgw2dvmozfmkehw7i.jpg",
-                "edgeColor": "#a9a399",
+                "edgeColor": "rgb(169, 163, 153)",
                 "idAttachment": "QljSnV"
             },
             "isTemplate": false,
@@ -3449,22 +3449,22 @@ export const board = {
     ],
     "uploadedImages": [
         {
-            "_id": "uVv8Nd",
+            "uploadedImgId": "uVv8Nd",
             "name": "stars",
             "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765735106/z5i5uutrebrvp4b28uho.jpg"
         },
         {
-            "_id": "tF8d5I",
+            "uploadedImgId": "tF8d5I",
             "name": "field",
             "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765735150/gdhwp60ichb2gxadyls0.jpg"
         },
         {
-            "_id": "ot1KjC",
+            "uploadedImgId": "ot1KjC",
             "name": "sea",
             "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765735160/sb3amqlb22titi2gbtan.jpg"
         },
         {
-            "_id": "7ofx4p",
+            "uploadedImgId": "7ofx4p",
             "name": "trellis",
             "url": "https://res.cloudinary.com/da9naclpy/image/upload/v1765735195/e4a2w4i2yfvs5unrjetq.webp"
         }
