@@ -137,7 +137,7 @@ export function TaskPreview({ id, task, taskActions, members, className }) {
                                 ? <span style={{ color: "#6A9A23" }} title="Mark incomplete"><CircleCheckIcon width={16} height={16} fill="currentColor" /></span>
                                 : <span title="Mark complete"><CircleIcon width={16} height={16} fill="currentColor" /></span>}
                         </div>
-                        <span>{task.name}</span>
+                        <span className="task-name-text">{task.name}</span>
                     </div>
                 </div>
 

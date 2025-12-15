@@ -17,6 +17,17 @@
     &:hover {
         outline: #4688EC auto 2px;
         outline-offset: 2px;
+
+        & .task-state {
+            transition: opacity 0.3s ease-in;
+            opacity: 1;
+        }
+
+        & .task-name-text {
+            width: calc(100% - 20px);
+            transform: translateX(0px);
+            transition: transform 0.3s ease-in;
+        }
     }
 
     & .cover-img {
@@ -55,19 +66,6 @@
             justify-content: flex-start;
             gap: 0.5rem;
             padding: 0.75rem 0.75rem 0;
-
-            & .task-name {
-                display: flex;
-                gap: 0.5rem;
-            }
-
-            & .task-state {
-                & span {
-                    display: flex;
-                    align-items: center;
-                    padding-block-start: 0.125rem;
-                }
-            }
         }
 
         & .task-labels {
@@ -185,5 +183,31 @@
             top: 0.25rem;
             right: 2.2rem;
         }
+    }
+
+    & .task-name {
+        display: flex;
+        flex-flow: row;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 0.5rem;
+    }
+
+    & .task-state {
+        display: flex;
+        height: 20px;
+        transition: opacity 0.3s ease-in;
+        opacity: 0;
+
+        &>span {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    & .task-name-text {
+        width: 100%;
+        transform: translateX(-20px);
+        transition: all 0.3s ease-in;
     }
 }
