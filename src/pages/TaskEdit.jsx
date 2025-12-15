@@ -438,19 +438,47 @@ export function TaskEdit() {
                                 </div>
                             </section>
 
-                            {(task?.idLabels?.length > 0 || task?.due || task?.start) &&
+                            {(task?.idMembers?.length > 0 || task?.idLabels?.length > 0 || task?.due || task?.start) &&
                                 <div className="task-params">
-                                    {/* TODO: implement displaying members */}
-                                    {/* <section className="task-flex-container">
-                                <h3 className="params-heading">Members</h3>
-                                <button className="btn-neutral">
-                                    Member
-                                </button>
-                            </section> */}
+                                    {task?.idMembers?.length > 0 && (
+                                        <section className="task-flex-container">
+                                            <h3 className="params-heading">Members</h3>
+                                            <div className="params-container">
+                                                {task?.idMembers?.map((memberId) => {
+                                                    const member = board?.members?.find((member) => member._id === memberId)
+
+                                                    return (
+                                                        <button
+                                                            key={memberId}
+                                                            type="button"
+                                                            onClick={(event) => {
+                                                                handlePopoverOpen(event, PICKER_MAP.MEMBER, memberId)
+                                                            }}
+                                                            className="btn-neutral member-btn"
+                                                        >
+                                                            <span
+                                                                className="member-avatar"
+                                                                style={{ backgroundImage: `url(${member.avatarUrl})` }}
+                                                                title={member.fullName}
+                                                            />
+                                                        </button>
+                                                    )
+                                                })}
+                                                <button
+                                                    className="btn-neutral member-add-btn"
+                                                    onClick={(event) => {
+                                                        handlePopoverOpen(event, PICKER_MAP.MEMBER)
+                                                    }}>
+                                                    <PlusIcon width={16} height={16} fill="currentColor" />
+                                                </button>
+                                            </div>
+                                        </section>
+                                    )}
+
                                     {task?.idLabels?.length > 0 &&
                                         <section className="task-flex-container">
                                             <h3 className="params-heading">Labels</h3>
-                                            <div className="labels-container">
+                                            <div className="params-container">
                                                 {task?.idLabels?.map((labelId) => {
                                                     const label = labels.find((l) => l._id === labelId)
                                                     return (

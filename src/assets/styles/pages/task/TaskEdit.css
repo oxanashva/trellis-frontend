@@ -232,10 +232,36 @@
             margin-block-end: 0.75rem;
         }
 
-        & .labels-container {
+        & .params-container {
             display: flex;
             flex-wrap: wrap;
             gap: 0.25rem;
+
+            & .member-add-btn {
+                padding: 0.25rem;
+                border-radius: 50%;
+            }
+
+            & .member-btn {
+                width: 32px;
+                height: 32px;
+                padding: 0;
+                border-radius: 50%;
+
+                &>span {
+                    display: block;
+                    width: 32px;
+                    height: 32px;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-size: cover;
+
+                    &:hover {
+                        background-color: #DDDEE1;
+                        background-blend-mode: multiply;
+                    }
+                }
+            }
 
             & .label-add-btn {
                 padding: 0.25rem;
