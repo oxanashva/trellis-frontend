@@ -74,10 +74,7 @@ export function MemberPicker({ members, task, onUpdateTask }) {
                     <>
                         <h3 className="picker-subtitle">Board members</h3>
                         {boardMembers.map(member => (
-                            <>
-                                <MemberPreview key={member._id} member={member} isAssigned={false} />
-                                <MemberPreview key={member._id} member={member} isAssigned={false} />
-                            </>
+                            <MemberPreview key={member._id} member={member} isAssigned={false} />
                         ))}
                     </>
                 ) : null}
