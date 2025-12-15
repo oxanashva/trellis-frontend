@@ -10,23 +10,36 @@
         visibility: visible;
     }
 
-    &.task-preview-placholder>* {
+    &.task-preview-placeholder>* {
         visibility: hidden;
+    }
+
+    &.task-preview-closed,
+    &:hover {
+
+        .task-state,
+        .task-name-text {
+            transition: opacity 0.3s ease-in, transform 0.3s ease-in;
+        }
+
+        .task-name-text {
+            width: calc(100% - 20px);
+            transform: translateX(0px);
+        }
+
+        .task-state {
+            opacity: 1;
+        }
     }
 
     &:hover {
         outline: #4688EC auto 2px;
         outline-offset: 2px;
+    }
 
-        & .task-state {
-            transition: opacity 0.3s ease-in;
-            opacity: 1;
-        }
-
-        & .task-name-text {
-            width: calc(100% - 20px);
-            transform: translateX(0px);
-            transition: transform 0.3s ease-in;
+    &.task-preview-closed {
+        .task-name-text {
+            opacity: 0.5;
         }
     }
 

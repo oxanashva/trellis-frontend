@@ -77,6 +77,10 @@ export function TaskPreview({ id, task, taskActions, members, className }) {
 
     const badgeInfo = getDueStatusBadge(task?.due, task?.dueTime)
 
+    const closedTaskClass = task?.closed
+        ? 'task-preview-closed'
+        : ''
+
     // If `className` contains 'task-preview-ghost', the component is used for DragOverlay
     // and should render as a semi‑transparent copy of the task element.
     // Otherwise, the component is used for normal rendering.
@@ -84,9 +88,8 @@ export function TaskPreview({ id, task, taskActions, members, className }) {
     const taskPreviewClass = className?.includes('task-preview-ghost')
         ? className
         : isDragging
-            ? 'task-preview task-preview-placholder'
-            : 'task-preview';
-
+            ? `task-preview task-preview-placeholder ${closedTaskClass}`
+            : `task-preview ${closedTaskClass}`
 
     return (
         <li
@@ -202,11 +205,12 @@ export function TaskPreview({ id, task, taskActions, members, className }) {
                     }}>
                     <EditIcon width={16} height={16} fill="currentColor" />
                 </button>
-                <button
-                    className="task-btn archive-btn"
-                    onClick={onRemoveTask}>
-                    <ArchiveIcon width={16} height={16} fill="currentColor" />
-                </button>
+                {task?.closed &&
+                    <button
+                        className="task-btn archive-btn"
+                        onClick={onRemoveTask}>
+                        <ArchiveIcon width={16} height={16} fill="currentColor" />
+                    </button>}
             </div>
         </li>
     )
