@@ -97,15 +97,14 @@ export function TaskEdit() {
                 selectedDate: task?.dueDate,
             }
         },
-        // MEMBER: {
-        //     type: "MemberPicker",
-        //     info: {
-        //         label: "Members: ",
-        //         propName: "memberIds",
-        //         selectedMemberIds: task?.memberIds || [],
-        //         members: board?.members
-        //     }
-        // },
+        MEMBER: {
+            type: "MemberPicker",
+            info: {
+                label: "Members: ",
+                propName: "memberIds",
+                selectedMemberIds: task?.memberIds || [],
+            }
+        },
         COVER: {
             type: "CoverPicker",
             info: {
@@ -379,6 +378,7 @@ export function TaskEdit() {
                                     onAddLabel={onAddLabel}
                                     onUpdateLabel={onUpdateLabel}
                                     onRemoveLabel={onRemoveLabel}
+                                    members={board?.members}
                                 />
                             )}
                             <section className="task-grid-container">
