@@ -459,7 +459,7 @@ export function TaskEdit() {
                                                             <span
                                                                 className="member-avatar"
                                                                 style={{ backgroundImage: `url(${member.avatarUrl})` }}
-                                                                title={member.fullName}
+                                                                title={`${member.fullName} (${member.username})`}
                                                             />
                                                         </button>
                                                     )

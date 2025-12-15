@@ -357,7 +357,7 @@ export function BoardDetails() {
                                 <button
                                     key={m._id}
                                     className="dynamic-btn icon-btn avatar-btn"
-                                    title={`${m.fullname} (${m.username})`}
+                                    title={`${m.fullName} (${m.username})`}
                                 >
                                     <span style={{ backgroundImage: `url(${m.avatarUrl})` }}></span>
                                 </button>

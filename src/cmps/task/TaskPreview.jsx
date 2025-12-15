@@ -185,7 +185,7 @@ export function TaskPreview({ id, task, taskActions, members, className }) {
                                     <span
                                         key={memberId}
                                         className="member-preview"
-                                        title={member.fullName}
+                                        title={`${member.fullName} (${member.username})`}
                                         style={{ backgroundImage: `url(${member.avatarUrl})` }}
                                     >
                                     </span>
