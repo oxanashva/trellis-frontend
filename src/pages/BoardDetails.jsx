@@ -43,6 +43,7 @@ export function BoardDetails() {
     const [groupsOrder, setGroupsOrder] = useState(board?.groups || [])
     const [tasksOrder, setTasksOrder] = useState(board?.tasks || [])
     const actions = board?.actions
+    const members = board?.members
 
     const [activeId, setActiveId] = useState(null)
 
@@ -412,6 +413,7 @@ export function BoardDetails() {
                                 groups={groupsOrder}
                                 tasks={tasksOrder}
                                 actions={actions}
+                                members={members}
                                 onAddGroup={onAddGroup}
                                 onRemoveGroup={onRemoveGroup}
                                 onUpdateGroup={onUpdateGroup}

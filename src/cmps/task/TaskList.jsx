@@ -9,7 +9,7 @@ import { useFocusOnStateChange } from '../../customHooks/useFocusOnStateChange'
 import { TaskPreview } from './TaskPreview'
 import { ItemCreator } from '../ItemCreator'
 
-export function TaskList({ group, tasks, actions, onAddTask, isAddingTask, setIsAddingTask }) {
+export function TaskList({ group, tasks, actions, members, onAddTask, isAddingTask, setIsAddingTask }) {
     const { boardId } = useParams()
     const [taskName, setTaskName] = useState('')
     const textareaRef = useFocusOnStateChange(isAddingTask)
@@ -62,6 +62,7 @@ export function TaskList({ group, tasks, actions, onAddTask, isAddingTask, setIs
                             key={task._id}
                             id={task._id}
                             task={task}
+                            members={members}
                             taskActions={taskActions}
                         />
                     )

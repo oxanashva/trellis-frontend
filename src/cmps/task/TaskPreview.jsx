@@ -23,7 +23,7 @@ import ClockIcon from '../../assets/images/icons/clock.svg?react'
 import { coverColorsMap, labelsColorsMap } from '../../services/util.service'
 
 
-export function TaskPreview({ id, task, taskActions, className }) {
+export function TaskPreview({ id, task, taskActions, members, className }) {
     const { boardId } = useParams()
     const [isChecked, setIsChecked] = useState(task.closed || false)
     const navigate = useNavigate()
@@ -141,37 +141,58 @@ export function TaskPreview({ id, task, taskActions, className }) {
                     </div>
                 </div>
 
-                {/* TODO: update task.badges on add comment/description or another action and use them to conditionally render */}
                 <div className="task-badges">
-                    {/* TODO: implement votes */}
-                    {/* {task.idMembersVoted?.length !== 0 &&
+                    <div className="badges-wrapper">
+                        {/* TODO: implement votes */}
+                        {/* {task.idMembersVoted?.length !== 0 &&
                         <span className="badge">
                             <ThumbsUpIcon width={16} height={16} fill="currentColor" />
                             <span>{task.idMembersVoted?.length}</span>
                         </span>
                     } */}
 
-                    {(task?.start || task?.due) &&
+                        {(task?.start || task?.due) &&
 
-                        <span className={`badge ${task.closed ? "badge-closed" : badgeInfo?.className}`}>
-                            <ClockIcon width={16} height={16} fill="currentColor" />
-                            {task.start && !task.due && "Started: "}
-                            {task.start ? dayjs(task.start).format("MMM DD") : ""}
-                            {task.start && task.due && " - "}
-                            {task.due ? dayjs(task.due).format("MMM DD") : ""}
-                        </span>
-                    }
-                    {task.desc &&
-                        <span>
-                            <DescriptionIcon width={16} height={16} fill="currentColor" />
-                        </span>
-                    }
-                    {taskActions?.length !== 0 &&
-                        <span className="badge">
-                            <CommentIcon width={16} height={16} fill="currentColor" />
-                            <span>{taskActions?.length}</span>
-                        </span>
-                    }
+                            <span className={`badge ${task.closed ? "badge-closed" : badgeInfo?.className}`}>
+                                <ClockIcon width={16} height={16} fill="currentColor" />
+                                {task.start && !task.due && "Started: "}
+                                {task.start ? dayjs(task.start).format("MMM DD") : ""}
+                                {task.start && task.due && " - "}
+                                {task.due ? dayjs(task.due).format("MMM DD") : ""}
+                            </span>
+                        }
+                        {task.desc &&
+                            <span>
+                                <DescriptionIcon width={16} height={16} fill="currentColor" />
+                            </span>
+                        }
+                        {taskActions?.length !== 0 &&
+                            <span className="badge">
+                                <CommentIcon width={16} height={16} fill="currentColor" />
+                                <span>{taskActions?.length}</span>
+                            </span>
+                        }
+                    </div>
+
+                    {task?.idMembers?.length > 0 && (
+                        <div className="members-badges-wrapper">
+                            {task.idMembers.map((memberId) => {
+                                const member = members?.find((m) => m._id === memberId)
+
+                                if (!member) return null
+
+                                return (
+                                    <span
+                                        key={memberId}
+                                        className="member-preview"
+                                        title={member.fullName}
+                                        style={{ backgroundImage: `url(${member.avatarUrl})` }}
+                                    >
+                                    </span>
+                                )
+                            })}
+                        </div>
+                    )}
                 </div>
                 <button
                     className="task-btn edit-btn"

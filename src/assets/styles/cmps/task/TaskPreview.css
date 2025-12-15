@@ -85,12 +85,17 @@
 
         .task-badges {
             display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            column-gap: 0.25rem;
+            flex-direction: column;
             max-width: 100%;
             padding-inline: 0.75rem;
             margin-block-start: 0.25rem;
+
+            & .badges-wrapper {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                column-gap: 0.25rem;
+            }
 
             & .badge {
                 position: relative;
@@ -120,6 +125,29 @@
                 &.badge-closed {
                     background-color: var(--background-success-bold);
                     color: #ffffff;
+                }
+            }
+
+            & .members-badges-wrapper {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: right;
+                margin-inline-end: -4px;
+                float: right;
+                gap: 0.25rem;
+
+                & .member-preview {
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    background-position: center;
+
+                    &:hover {
+                        background-color: #DDDEE1;
+                        background-blend-mode: multiply;
+                    }
                 }
             }
         }
