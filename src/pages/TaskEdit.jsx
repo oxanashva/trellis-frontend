@@ -369,11 +369,11 @@ export function TaskEdit() {
                         <div className="task-content">
                             {picker && (
                                 <DynamicPicker
-                                    task={task}
                                     picker={picker}
                                     open={openPopover}
                                     anchorEl={anchorEl}
                                     onClose={handlePopoverClose}
+                                    task={task}
                                     onUpdateTask={onUpdateTask}
                                     onAddLabel={onAddLabel}
                                     onUpdateLabel={onUpdateLabel}
@@ -420,7 +420,7 @@ export function TaskEdit() {
                                 </button> */}
                                     <button
                                         className="action-btn"
-                                        onClick={() => {
+                                        onClick={(event) => {
                                             handlePopoverOpen(event, PICKER_MAP.MEMBER)
                                         }}>
                                         <MemberPlusIcon width={16} height={16} fill="currentColor" />

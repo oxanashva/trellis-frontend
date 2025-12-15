@@ -436,8 +436,8 @@ export function BoardDetails() {
                     open={openPopover}
                     anchorEl={anchorEl}
                     onClose={handlePopoverClose}
-                    setStarred={setStarred}
                     isStarred={board?.isStarred}
+                    setStarred={setStarred}
                     prefs={board?.prefs}
                     uploadedImages={board?.uploadedImages}
                     onUpdateBoard={onUpdateBoard}

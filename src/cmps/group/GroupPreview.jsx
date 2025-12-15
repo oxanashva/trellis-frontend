@@ -112,9 +112,9 @@ export function GroupPreview({ id, group, tasks, actions, onUpdateGroup, onRemov
                     open={openPopover}
                     anchorEl={anchorEl}
                     onClose={handlePopoverClose}
-                    setIsAddingTask={setIsAddingTask}
                     boardId={group.idBoard}
                     groupId={group._id}
+                    setIsAddingTask={setIsAddingTask}
                     onRemoveGroup={onRemoveGroup}
                 />
             )}

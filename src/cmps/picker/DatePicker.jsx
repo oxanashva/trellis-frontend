@@ -9,7 +9,7 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar"
 
 import CheckboxCheckIcon from "../../assets/images/icons/checkbox-check.svg?react"
 
-export function DatePicker({ task, onClose, onUpdateTask }) {
+export function DatePicker({ task, onUpdateTask, onClose }) {
     // TODO: implement start date support and range calendar
 
     const initialState = {

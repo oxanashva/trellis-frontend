@@ -11,7 +11,7 @@ import { cloudinaryGradientColorsMap, darkenRgb, getAverageColor, gradientColors
 
 import { ImgUploader } from '../ImgUploader'
 
-export function BoardPicker({ setStarred, isStarred, prefs, uploadedImages, onUpdateBoard, onRemoveBoard }) {
+export function BoardPicker({ isStarred, setStarred, prefs, uploadedImages, onUpdateBoard, onRemoveBoard }) {
     const [isEditingBoardBackground, setIsEditingBoardBackground] = useState(false)
     const [isEditingColors, setIsEditingColors] = useState(false)
 
