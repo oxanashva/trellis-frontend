@@ -8,7 +8,7 @@ import PlusIcon from '../../assets/images/icons/plus.svg?react'
 import { ItemCreator } from "../ItemCreator"
 import { useParams } from "react-router"
 
-export function GroupList({ groups, tasks, actions, onAddGroup, onRemoveGroup, onUpdateGroup, onAddTask }) {
+export function GroupList({ groups, tasks, actions, members, onAddGroup, onRemoveGroup, onUpdateGroup, onAddTask }) {
     const { boardId } = useParams()
     const [groupName, setGroupName] = useState('')
     const [isAddingGroup, setIsAddingGroup] = useState(false)
@@ -43,6 +43,7 @@ export function GroupList({ groups, tasks, actions, onAddGroup, onRemoveGroup, o
                         group={group}
                         tasks={tasksForThisGroup}
                         actions={actions}
+                        members={members}
                         onRemoveGroup={onRemoveGroup}
                         onUpdateGroup={onUpdateGroup}
                         onAddTask={onAddTask}

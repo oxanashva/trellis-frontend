@@ -43,6 +43,7 @@ export function BoardDetails() {
     const [groupsOrder, setGroupsOrder] = useState(board?.groups || [])
     const [tasksOrder, setTasksOrder] = useState(board?.tasks || [])
     const actions = board?.actions
+    const members = board?.members
 
     const [activeId, setActiveId] = useState(null)
 
@@ -356,7 +357,7 @@ export function BoardDetails() {
                                 <button
                                     key={m._id}
                                     className="dynamic-btn icon-btn avatar-btn"
-                                    title={`${m.fullname} (${m.username})`}
+                                    title={`${m.fullName} (${m.username})`}
                                 >
                                     <span style={{ backgroundImage: `url(${m.avatarUrl})` }}></span>
                                 </button>
@@ -412,6 +413,7 @@ export function BoardDetails() {
                                 groups={groupsOrder}
                                 tasks={tasksOrder}
                                 actions={actions}
+                                members={members}
                                 onAddGroup={onAddGroup}
                                 onRemoveGroup={onRemoveGroup}
                                 onUpdateGroup={onUpdateGroup}
@@ -436,8 +438,8 @@ export function BoardDetails() {
                     open={openPopover}
                     anchorEl={anchorEl}
                     onClose={handlePopoverClose}
-                    setStarred={setStarred}
                     isStarred={board?.isStarred}
+                    setStarred={setStarred}
                     prefs={board?.prefs}
                     uploadedImages={board?.uploadedImages}
                     onUpdateBoard={onUpdateBoard}
