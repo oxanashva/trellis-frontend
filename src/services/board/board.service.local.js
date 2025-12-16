@@ -40,8 +40,8 @@ async function query() {
     return await storageService.query(STORAGE_KEY)
 }
 
-function getById(carId) {
-    return storageService.get(STORAGE_KEY, carId)
+function getById(boardId) {
+    return storageService.get(STORAGE_KEY, boardId)
 }
 
 async function save(board) {
@@ -54,8 +54,8 @@ async function save(board) {
     return savedBoard
 }
 
-async function remove(carId) {
-    await storageService.remove(STORAGE_KEY, carId)
+async function remove(boardId) {
+    await storageService.remove(STORAGE_KEY, boardId)
 }
 
 // ------------------- Group CRUD -------------------
@@ -193,17 +193,17 @@ async function removeLabel(boardId, labelId) {
 
 // ------------------- Board Messages -------------------
 
-async function addBoardMsg(carId, txt) {
+async function addBoardMsg(boardId, txt) {
     // Later, this is all done by the backend
-    const car = await getById(carId)
+    const board = await getById(boardId)
 
     const msg = {
         id: makeId(),
         by: userService.getLoggedinUser(),
         txt
     }
-    car.msgs.push(msg)
-    await storageService.put(STORAGE_KEY, car)
+    board.msgs.push(msg)
+    await storageService.put(STORAGE_KEY, board)
 
     return msg
 }
