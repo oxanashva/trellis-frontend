@@ -52,7 +52,7 @@ export function TaskEdit() {
             // Sort in descending order
             return dateB - dateA;
         })
-    const labels = board?.labels
+    const labels = task?.labels
 
     const [isChecked, setIsChecked] = useState(task?.closed || false)
     const [isNameEditing, setIsNameEditing] = useState(false)
@@ -475,7 +475,7 @@ export function TaskEdit() {
                                         </section>
                                     )}
 
-                                    {task?.idLabels?.length > 0 &&
+                                    {task?.idLabels?.length > 0 && labels.length > 0 &&
                                         <section className="task-flex-container">
                                             <h3 className="params-heading">Labels</h3>
                                             <div className="params-container">

@@ -3,10 +3,10 @@ import { labelsColorsMap, defaultLabelsColorMap, makeId } from "../../services/u
 import ShevronLeft from '../../assets/images/icons/shevron-left.svg?react'
 import PenIcon from "../../assets/images/icons/pen.svg?react"
 
-const defaultLabels = Object.keys(defaultLabelsColorMap).map((colorKey, idx) => ({
+const defaultLabels = Object.keys(defaultLabelsColorMap).map((colorName) => ({
     _id: makeId(),
     name: "",
-    color: colorKey,
+    color: colorName,
 }))
 
 export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onRemoveLabel }) {
@@ -32,7 +32,11 @@ export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onR
 
         setSelectedLabels(newSelectedLabels)
 
-        onUpdateTask(task.idBoard, { ...task, idLabels: newSelectedLabels })
+        onUpdateTask(task.idBoard, {
+            ...task,
+            labels: task.labels.length === 0 && defaultLabels,
+            idLabels: newSelectedLabels
+        })
     }
 
     async function createLabel() {
@@ -115,7 +119,7 @@ export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onR
                 {/* Displaying existing task labels */}
                 {hasLabels && !isEditing && !isCreating &&
                     <div className="label-editor-content">
-                        {task.labels.map((label) => {
+                        {task?.labels?.map((label) => {
                             const labelHexColor = labelsColorsMap[label.color]
                             const isLabelSelected = selectedLabels.includes(label._id)
                             return (

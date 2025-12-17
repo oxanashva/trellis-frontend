@@ -115,10 +115,10 @@ export function TaskPreview({ id, task, taskActions, members, className }) {
                 {task.cover?.coverColor && <div className="cover-color" style={{ backgroundColor: coverColorsMap[task.cover.coverColor] }}></div>}
 
                 <div className="task-header">
-                    {task.idLabels?.length !== 0 &&
+                    {task?.idLabels?.length !== 0 &&
                         <div className="task-labels">
-                            {task.labels?.map(label => {
-                                if (task.idLabels?.includes(label._id)) {
+                            {task?.labels?.map(label => {
+                                if (task?.idLabels?.includes(label._id)) {
                                     return (
                                         <span
                                             key={label._id}
