@@ -34,7 +34,7 @@ export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onR
 
         onUpdateTask(task.idBoard, {
             ...task,
-            labels: task.labels.length === 0 && defaultLabels,
+            labels: task.labels.length === 0 ? defaultLabels : task.labels,
             idLabels: newSelectedLabels
         })
     }
