@@ -10,8 +10,8 @@ const defaultLabels = Object.keys(defaultLabelsColorMap).map((colorName) => ({
 }))
 
 export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onRemoveLabel }) {
-    const [hasLabels, setHasLabels] = useState(task.labels.length > 0)
-    const [selectedLabels, setSelectedLabels] = useState(task.idLabels || [])
+    const [hasLabels, setHasLabels] = useState(task?.labels?.length > 0)
+    const [selectedLabels, setSelectedLabels] = useState(task?.idLabels || [])
     const [isEditing, setIsEditing] = useState(false)
     const [isCreating, setIsCreating] = useState(false)
     const [labelName, setLabelName] = useState("")

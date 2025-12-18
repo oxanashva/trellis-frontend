@@ -81,7 +81,7 @@ export function CoverPicker({ task, onUpdateTask }) {
         setSelectedColorKey(null)
     }
 
-    const coverAttachments = task?.attachments.filter(attachment => attachment?.mimeType?.startsWith("image")) || []
+    const coverAttachments = task?.attachments?.filter(attachment => attachment?.mimeType?.startsWith("image")) || []
 
     return (
         <section className="cover-picker">

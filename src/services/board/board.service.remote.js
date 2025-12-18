@@ -24,7 +24,6 @@ export const boardService = {
     removeLabel,
     // Board messages
     addBoardMsg,
-    getEmptyBoard
 }
 
 // ------------------- Basic CRUD -------------------
@@ -120,33 +119,4 @@ async function removeLabel(boardId, labelId) {
 async function addBoardMsg(boardId, txt) {
     const savedMsg = await httpService.post(`board/${boardId}/msg`, { txt })
     return savedMsg
-}
-
-// ------------------- Factory -------------------
-
-function getEmptyBoard() {
-    const placeholderMember = {
-        _id: makeId(),
-        avatarUrl: null,
-        fullname: 'Guest User',
-        username: 'guest',
-        initials: 'GU'
-    }
-
-    return {
-        desc: '',
-        closed: false,
-        starred: false,
-        prefs: {
-            background: '#1868DB',
-        },
-        dateLastActivity: Date.now(),
-        dateLastView: Date.now(),
-        idMemberCreator: placeholderMember._id,
-        actions: [],
-        cards: [],
-        labels: [],
-        members: [placeholderMember],
-        checklists: []
-    }
 }
