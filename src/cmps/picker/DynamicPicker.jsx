@@ -8,6 +8,8 @@ import { MemberPicker } from "./MemberPicker"
 import Popover from "@mui/material/Popover"
 import CloseIcon from "../../assets/images/icons/close.svg?react"
 
+const TASK_PICKER_OFFSET = "68px";
+
 export function DynamicPicker({
     picker,
     open,
@@ -33,16 +35,8 @@ export function DynamicPicker({
     onRemoveLabel,
     members
 }) {
-    const [isBoardPicker, setIsBoardPicker] = useState(false)
-    const [isEditTaskPicker, setIsEditTaskPicker] = useState(false)
-
-    useEffect(() => {
-        if (picker.type === "GroupPicker" || picker.type === "BoardPicker") {
-            setIsBoardPicker(true)
-        } else if (picker.type === "MemberPicker" || picker.type === "LabelPicker" || picker.type === "DatePicker") {
-            setIsEditTaskPicker(true)
-        }
-    }, [picker.type])
+    const isBoardPicker = ["GroupPicker", "BoardPicker"].includes(picker.type)
+    const isEditTaskPicker = ["MemberPicker", "LabelPicker", "DatePicker"].includes(picker.type)
 
     const renderPickerContent = () => {
         switch (picker.type) {
@@ -93,8 +87,6 @@ export function DynamicPicker({
         }
     }
 
-    const taskPickerPosition = "68px"
-
     return (
         <Popover
             open={open}
@@ -112,7 +104,7 @@ export function DynamicPicker({
             slotProps={{
                 paper: {
                     sx: {
-                        top: isBoardPicker ? "unset" : `${taskPickerPosition} !important`,
+                        top: isBoardPicker ? "unset" : `${TASK_PICKER_OFFSET} !important`,
                         maxHeight: "82vh",
                         borderRadius: "0.5rem",
                         boxShadow: "0px 2px 6px #1E1F2126, 0px 0px 1px #1E1F214F",
