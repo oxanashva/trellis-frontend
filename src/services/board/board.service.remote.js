@@ -58,7 +58,7 @@ async function addGroup(boardId, group) {
 }
 
 async function updateGroup(boardId, group) {
-    const savedGroup = await httpService.put(`board/${boardId}/group`, group)
+    const savedGroup = await httpService.put(`board/${boardId}/group/${group._id}`, group)
     return savedGroup
 }
 
@@ -74,7 +74,7 @@ async function addTask(boardId, task) {
 }
 
 async function updateTask(boardId, task) {
-    const savedTask = await httpService.put(`board/${boardId}/task`, task)
+    const savedTask = await httpService.put(`board/${boardId}/task/${task._id}`, task)
     return savedTask
 }
 
@@ -90,7 +90,7 @@ async function addAction(boardId, action) {
 }
 
 async function updateAction(boardId, action) {
-    const savedAction = await httpService.put(`board/${boardId}/action`, action)
+    const savedAction = await httpService.put(`board/${boardId}/action/${action._id}`, action)
     return savedAction
 }
 
@@ -106,7 +106,7 @@ async function addLabel(boardId, label) {
 }
 
 async function updateLabel(boardId, label) {
-    const savedLabel = await httpService.put(`board/${boardId}/label`, label)
+    const savedLabel = await httpService.put(`board/${boardId}/label/${label._id}`, label)
     return savedLabel
 }
 
