@@ -5,7 +5,7 @@ export const board = {
     "desc": "Move fast without losing sight by adopting an agile workflow that gives your team perspective during any project management situation.\n\n- Keep all code, specs, and plans easily accessible in one location for more organized product development.\n- Collaborate seamlessly with engineers, product and scrum masters.\n- Manage and prioritize the product backlog with stakeholders and product managers.\n- Easily share what’s shipped and what’s up next with stakeholders.",
     "closed": false,
     "dateClosed": null,
-    "starred": false,
+    "isStarred": false,
     "prefs": {
         "background": "rgb(152,160,126)",
         "backgroundImage": "https://res.cloudinary.com/da9naclpy/image/upload/v1765735195/e4a2w4i2yfvs5unrjetq.webp"

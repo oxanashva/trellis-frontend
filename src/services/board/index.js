@@ -9,7 +9,7 @@ function getEmptyBoard() {
         desc: '',
         closed: false,
         dateClosed: null,
-        starred: false,
+        isStarred: false,
         prefs: {
             background: '#1868DB',
         },
