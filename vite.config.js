@@ -6,6 +6,10 @@ import svgr from 'vite-plugin-svgr';
 export default defineConfig({
   plugins: [
     react(),
-    svgr()
-  ]
+    svgr(),
+  ],
+  build: {
+    outDir: "../trellis-backend/public",
+    emptyOutDir: true
+  }
 })
