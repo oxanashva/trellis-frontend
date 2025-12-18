@@ -52,7 +52,7 @@ export function TaskEdit() {
             // Sort in descending order
             return dateB - dateA;
         })
-    const labels = task?.labels
+    const labels = useSelector(storeState => storeState.boardModule.board?.labels)
 
     const [isChecked, setIsChecked] = useState(task?.closed || false)
     const [isNameEditing, setIsNameEditing] = useState(false)
@@ -132,9 +132,9 @@ export function TaskEdit() {
         }
     }
 
-    async function onUpdateTask(boardId, fieldsToUpdate) {
+    async function onUpdateTask(boardId, taskId, fieldsToUpdate) {
         try {
-            await updateTask(boardId, task, fieldsToUpdate)
+            await updateTask(boardId, taskId, fieldsToUpdate)
             showSuccessMsg('Task updated')
         } catch (err) {
             showErrorMsg('Cannot update task')
@@ -475,7 +475,7 @@ export function TaskEdit() {
                                         </section>
                                     )}
 
-                                    {task?.idLabels?.length > 0 && labels.length > 0 &&
+                                    {task?.idLabels?.length > 0 && labels?.length > 0 &&
                                         <section className="task-flex-container">
                                             <h3 className="params-heading">Labels</h3>
                                             <div className="params-container">

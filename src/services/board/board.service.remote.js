@@ -73,8 +73,8 @@ async function addTask(boardId, task) {
     return savedTask
 }
 
-async function updateTask(boardId, task) {
-    const savedTask = await httpService.put(`board/${boardId}/task/${task._id}`, task)
+async function updateTask(boardId, taskId, fieldsToUpdate) {
+    const savedTask = await httpService.put(`board/${boardId}/task/${taskId}`, fieldsToUpdate)
     return savedTask
 }
 

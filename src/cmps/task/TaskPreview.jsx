@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from "react-router"
+import { useSelector } from 'react-redux'
 import { removeTask } from '../../store/actions/board.actions'
 import { updateTask } from '../../store/actions/board.actions'
 
@@ -27,6 +28,8 @@ export function TaskPreview({ id, task, taskActions, members, className }) {
     const { boardId } = useParams()
     const [isChecked, setIsChecked] = useState(task.closed || false)
     const navigate = useNavigate()
+
+    const labels = useSelector(storeState => storeState.boardModule.board?.labels)
 
     const {
         attributes,
@@ -115,9 +118,9 @@ export function TaskPreview({ id, task, taskActions, members, className }) {
                 {task.cover?.coverColor && <div className="cover-color" style={{ backgroundColor: coverColorsMap[task.cover.coverColor] }}></div>}
 
                 <div className="task-header">
-                    {task?.idLabels?.length !== 0 && task?.labels?.length !== 0 &&
+                    {task?.idLabels?.length !== 0 && labels?.length !== 0 &&
                         <div className="task-labels">
-                            {task?.labels?.map(label => {
+                            {labels?.map(label => {
                                 if (task?.idLabels?.includes(label._id)) {
                                     return (
                                         <span

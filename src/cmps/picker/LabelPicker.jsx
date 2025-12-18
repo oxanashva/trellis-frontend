@@ -1,13 +1,8 @@
 import { useState } from "react" // Removed useEffect as it's not needed for this logic
-import { labelsColorsMap, defaultLabelsColorMap, makeId } from "../../services/util.service"
+import { labelsColorsMap, makeId } from "../../services/util.service"
 import ShevronLeft from '../../assets/images/icons/shevron-left.svg?react'
 import PenIcon from "../../assets/images/icons/pen.svg?react"
-
-const defaultLabels = Object.keys(defaultLabelsColorMap).map((colorName) => ({
-    _id: makeId(),
-    name: "",
-    color: colorName,
-}))
+import { useSelector } from "react-redux"
 
 export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onRemoveLabel }) {
     const [hasLabels, setHasLabels] = useState(task?.labels?.length > 0)
@@ -17,26 +12,25 @@ export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onR
     const [labelName, setLabelName] = useState("")
     const [selectedColorKey, setSelectedColorKey] = useState(null)
     const [labelToEdit, setLabelToEdit] = useState(null)
+    const [confirmRemove, setConfirmRemove] = useState(false)
 
-    const currentPreviewColorKey = selectedColorKey || (labelToEdit && labelToEdit.color) || (isCreating && Object.keys(labelsColorsMap)[0]) || (!hasLabels && Object.keys(defaultLabelsColorMap)[0])
+    const currentPreviewColorKey = selectedColorKey || (labelToEdit && labelToEdit.color) || (isCreating && Object.keys(labelsColorsMap)[0]) || (!hasLabels && Object.keys(labelsColorsMap)[0])
+
+    const boardLabels = useSelector(storeState => storeState.boardModule.board?.labels)
 
     function handleLabelToggle(labelId) {
         const isCurrentlySelected = selectedLabels.includes(labelId)
-        let newSelectedLabels
-
-        if (isCurrentlySelected) {
-            newSelectedLabels = selectedLabels.filter(l => l !== labelId)
-        } else {
-            newSelectedLabels = [...selectedLabels, labelId]
-        }
+        const newSelectedLabels = isCurrentlySelected
+            ? selectedLabels.filter(id => id !== labelId)
+            : [...selectedLabels, labelId]
 
         setSelectedLabels(newSelectedLabels)
 
-        onUpdateTask(task.idBoard, {
-            ...task,
-            labels: task.labels.length === 0 ? defaultLabels : task.labels,
+        const fieldsToUpdate = {
             idLabels: newSelectedLabels
-        })
+        }
+
+        onUpdateTask(task.idBoard, task._id, fieldsToUpdate)
     }
 
     async function createLabel() {
@@ -47,7 +41,7 @@ export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onR
             color: selectedColorKey,
         }
 
-        const newSelectedLabels = [...selectedLabels, newLabel._id]
+        const newSelectedLabels = [...(selectedLabels || []), newLabel._id]
 
         setSelectedLabels(newSelectedLabels)
         setHasLabels(true)
@@ -56,10 +50,12 @@ export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onR
         setSelectedColorKey(null)
 
         await onAddLabel(newLabel)
-        await onUpdateTask(task.idBoard, {
-            labels: [...task.labels, newLabel],
+
+        const fieldsToUpdate = {
             idLabels: newSelectedLabels
-        })
+        }
+
+        await onUpdateTask(task.idBoard, task._id, fieldsToUpdate)
     }
 
     async function editLabel() {
@@ -68,39 +64,42 @@ export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onR
             name: labelName,
             color: selectedColorKey,
         }
+
         setIsEditing(false)
         setLabelName("")
         setLabelToEdit(null)
         setSelectedColorKey(null)
+
         await onUpdateLabel(updatedLabel)
-        await onUpdateTask(task.idBoard, {
-            ...task,
-            labels: task.labels.map(l => l._id === updatedLabel._id ? updatedLabel : l),
-            idLabels: task.idLabels.filter(l => l !== updatedLabel._id)
-        })
+    }
+
+    function confirmRemoveLabel() {
+        setConfirmRemove(true)
+        setIsCreating(false)
+        setIsEditing(false)
     }
 
     async function removeLabel(labelId) {
-        const newLabels = task.labels.filter(l => l._id !== labelId)
+        const newIdLabels = task.idLabels.filter(id => id !== labelId)
+
         setIsEditing(false)
         setLabelName("")
         setLabelToEdit(null)
         setSelectedColorKey(null)
-        setHasLabels(newLabels.length > 0)
-        await onUpdateTask(task.idBoard, {
-            ...task,
-            labels: task.labels.filter(l => l._id !== labelId),
-            idLabels: task.idLabels.filter(l => l !== labelId)
-        })
+        setConfirmRemove(false)
+
+        const fieldsToUpdate = { idLabels: newIdLabels }
+        await onUpdateTask(task.idBoard, task._id, fieldsToUpdate)
+
         await onRemoveLabel(labelId)
     }
 
     return (
         <section className="label-picker">
             <header className="picker-header">
-                <h2 className="picker-title">{isEditing ? "Edit labels" : isCreating ? "Create labels" : "Labels"}</h2>
+                <h2 className="picker-title">{isEditing ? "Edit labels" : isCreating ? "Create labels" : confirmRemove ? "Delete label" : "Label"}</h2>
 
-                {(isEditing || isCreating) && (
+                {(isEditing || isCreating || confirmRemove) && (
                     <button
                         className="icon-btn dynamic-btn previous-btn"
                         onClick={() => {
@@ -109,6 +108,7 @@ export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onR
                             setLabelName("")
                             setSelectedColorKey(null)
                             setLabelToEdit(null)
+                            setConfirmRemove(false)
                         }}>
                         <ShevronLeft width={16} height={16} fill="currentColor" />
                     </button>
@@ -117,9 +117,9 @@ export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onR
 
             <div className="picker-container label-editor">
                 {/* Displaying existing task labels */}
-                {hasLabels && !isEditing && !isCreating &&
+                {hasLabels && !isEditing && !isCreating && !confirmRemove &&
                     <div className="label-editor-content">
-                        {task?.labels?.map((label) => {
+                        {boardLabels?.map((label) => {
                             const labelHexColor = labelsColorsMap[label.color]
                             const isLabelSelected = selectedLabels.includes(label._id)
                             return (
@@ -154,10 +154,10 @@ export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onR
                 }
 
                 {/* Displaying all available labels if task has none */}
-                {!hasLabels && !isEditing && !isCreating &&
+                {!hasLabels && !isEditing && !isCreating && !confirmRemove &&
                     <div className="label-editor-content">
-                        {defaultLabels.map((label) => {
-                            const labelHexColor = defaultLabelsColorMap[label.color]
+                        {boardLabels?.map((label) => {
+                            const labelHexColor = labelsColorsMap[label.color]
                             const isLabelSelected = selectedLabels.includes(label._id)
 
                             return (
@@ -228,14 +228,14 @@ export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onR
                 }
 
                 {/* Actions */}
-                {!isEditing && !isCreating &&
+                {!isEditing && !isCreating && !confirmRemove &&
                     <button
                         className="btn-neutral create-label-btn"
                         onClick={() => {
                             setIsCreating(true)
                             setLabelName("")
-                            setSelectedColorKey(Object.keys(defaultLabelsColorMap)[0]) // Default color
-                            setLabelToEdit({ _id: makeId(), name: "", color: Object.keys(defaultLabelsColorMap)[0] })
+                            setSelectedColorKey(Object.keys(labelsColorsMap)[0]) // Default color
+                            setLabelToEdit({ _id: makeId(), name: "", color: Object.keys(labelsColorsMap)[0] })
                         }}
                     >
                         Create a new label
@@ -253,12 +253,27 @@ export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onR
                             </button>
                             <button
                                 className="btn-danger"
-                                onClick={() => removeLabel(labelToEdit._id)}
+                                onClick={confirmRemoveLabel}
                             >
                                 Delete
                             </button>
                         </div>
                     </>
+                }
+
+                {confirmRemove && !isCreating && !isEditing &&
+                    <div className="label-editor-content confirm-content">
+                        <div className="confirm-text">
+                            <p>This will remove this label from all cards.</p>
+                            <p> There is no undo.</p>
+                        </div>
+                        <button
+                            className="btn-danger"
+                            onClick={() => removeLabel(labelToEdit._id)}
+                        >
+                            Delete
+                        </button>
+                    </div>
                 }
 
                 {isCreating &&

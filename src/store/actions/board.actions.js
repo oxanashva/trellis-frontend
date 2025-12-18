@@ -161,11 +161,11 @@ export async function addTask(boardId, task) {
     }
 }
 
-export async function updateTask(boardId, task, fieldsToUpdate) {
+export async function updateTask(boardId, taskId, fieldsToUpdate) {
     try {
-        const savedTask = await boardService.updateTask(boardId, task, fieldsToUpdate)
-        store.dispatch(getCmdUpdateTask(savedTask))
-        return savedTask
+        const savedFields = await boardService.updateTask(boardId, taskId, fieldsToUpdate)
+        store.dispatch(getCmdUpdateTask(taskId, savedFields))
+        return savedFields
     } catch (err) {
         console.log('Cannot update task', err)
         throw err
@@ -321,10 +321,10 @@ function getCmdAddTask(task) {
     }
 }
 
-function getCmdUpdateTask(task) {
+function getCmdUpdateTask(taskId, savedFields) {
     return {
         type: UPDATE_TASK,
-        task
+        task: { _id: taskId, ...savedFields }
     }
 }
 

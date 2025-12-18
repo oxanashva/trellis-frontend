@@ -43,6 +43,7 @@
 
     & .label-editor-content {
         flex: 1 1 auto;
+        max-width: 312px;
     }
 
     & .label-box {
@@ -167,6 +168,20 @@
         align-items: center;
         justify-content: space-between;
         justify-self: flex-end;
+        margin-block-start: 1rem;
+    }
+
+    & .confirm-content {
+        display: flex;
+        flex-direction: column;
+        align-items: space-between;
+        justify-content: space-between;
+        gap: 0.5rem;
+        height: 100%;
+    }
+
+    & .confirm-text {
+        text-align: center;
         margin-block-start: 1rem;
     }
 }
