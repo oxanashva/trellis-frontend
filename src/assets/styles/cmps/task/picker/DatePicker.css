@@ -2,6 +2,7 @@
     overflow-y: hidden;
 
     & .date-editor {
+        max-width: 312px;
         overflow-y: auto;
 
         &::-webkit-scrollbar-track {

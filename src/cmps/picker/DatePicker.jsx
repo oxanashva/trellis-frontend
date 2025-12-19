@@ -45,18 +45,20 @@ export function DatePicker({ task, onUpdateTask, onClose }) {
         const finalDueDate = isDueDateSet ? combineDateAndTime(dueDate, dueTime) : null
         const finalStartDate = isStartDateSet ? combineDateAndTime(startDate, null) : null
 
-        onUpdateTask(task.idBoard, {
+        const fieldsToUpdate = {
             due: finalDueDate,
             dueTime: isDueDateSet ? dueTime : null,
             start: finalStartDate
-        })
+        }
+
+        onUpdateTask(task.idBoard, task._id, fieldsToUpdate)
         onClose()
     }
 
     // TODO: implement submit on enter
 
     function onRemove() {
-        onUpdateTask(task.idBoard, { due: null, dueTime: null, start: null })
+        onUpdateTask(task.idBoard, task._id, { due: null, dueTime: null, start: null })
         onClose()
     }
 
@@ -74,16 +76,16 @@ export function DatePicker({ task, onUpdateTask, onClose }) {
                         showDaysOutsideCurrentMonth
                         sx={{
                             width: "unset",
-                            fontSize: "0.875rem",
                             height: "unset",
-                            "& .MuiPickersSlideTransition-root": {
-                                minHeight: "200px",
-                            },
-                            "& .MuiPickersDay-root": {
+                            maxHeight: "unset",
+                            fontSize: "0.875rem",
+
+                            "& .MuiPickersDay-root, .MuiYearCalendar-button, .MuiMonthCalendar-button": {
                                 fontSize: "0.875rem",
                             },
-                            "& .MuiMonthCalendar-root, .MuiYearCalendar-root": {
+                            "& .MuiMonthCalendar-root, & .MuiYearCalendar-root": {
                                 width: "unset",
+                                maxHeight: "unset",
                             },
                             "& .MuiPickersCalendarHeader-label": {
                                 fontSize: "0.875rem",
@@ -94,7 +96,22 @@ export function DatePicker({ task, onUpdateTask, onClose }) {
                             },
                             "& .MuiPickersArrowSwitcher-button": {
                                 paddingInline: "5px",
-                            }
+                            },
+                            ".MuiButtonBase-root": {
+                                borderRadius: "0.25rem",
+                            },
+                            ".MuiButtonBase-root:hover": {
+                                backgroundColor: "#0515240F",
+                            },
+                            ".MuiPickersDay-root.Mui-selected": {
+                                color: "#1868DB",
+                                backgroundColor: "#E9F2FE",
+                                borderRadius: "0.25rem",
+                            },
+                            ".MuiPickersDay-root:hover.Mui-selected": {
+                                color: "#1868DB",
+                                backgroundColor: "#CFE1FD",
+                            },
                         }}
                     />
                 </LocalizationProvider>
