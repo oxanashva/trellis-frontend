@@ -32,8 +32,6 @@ export function BoardDetails() {
 
     const [boardName, setBoardName] = useState('')
     const [isEditing, setIsEditing] = useState(false)
-    const [titleWidth, setTitleWidth] = useState(0)
-    const h1Ref = useRef(null)
     const inputRef = useFocusOnStateChange(isEditing)
 
     const [anchorEl, setAnchorEl] = useState(null)
@@ -79,7 +77,6 @@ export function BoardDetails() {
     function handleInputBlur() {
         updateBoard({ ...board, name: boardName })
         setIsEditing(false)
-        setTitleWidth(null)
     }
 
     function handleInput({ target }) {
@@ -95,8 +92,6 @@ export function BoardDetails() {
             setBoardName(board.name)
             setIsEditing(false)
         }
-
-        setTitleWidth(null)
     }
 
     const handlePopoverOpen = (event, pickerType) => {
@@ -110,10 +105,6 @@ export function BoardDetails() {
 
     function setStarred() {
         updateBoard({ ...board, isStarred: !board.isStarred })
-    }
-
-    function onChangeBackground(prefs) {
-        updateBoard({ ...board, prefs })
     }
 
     async function onAddBoard(newBoard) {
@@ -326,12 +317,8 @@ export function BoardDetails() {
                         {/* TODO: implement reusable component for editable field */}
                         {!isEditing &&
                             <h1
-                                ref={h1Ref}
                                 className="board-title"
-                                onClick={() => {
-                                    setIsEditing(true),
-                                        setTitleWidth(h1Ref?.current?.offsetWidth)
-                                }}
+                                onClick={() => setIsEditing(true)}
                                 title="Edit board name"
                             >
                                 {boardName}
@@ -341,7 +328,6 @@ export function BoardDetails() {
                         {isEditing &&
                             <input
                                 ref={inputRef}
-                                style={titleWidth ? { width: `${titleWidth + 4}px` } : {}}
                                 className="board-title"
                                 type="text"
                                 value={boardName}
