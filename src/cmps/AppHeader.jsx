@@ -1,9 +1,13 @@
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useNavigate, useLocation } from 'react-router'
 import { useSelector } from 'react-redux'
-import { getContrastingTextColor } from '../services/util.service'
+import { boardService } from '../services/board'
+import { addBoard } from '../store/actions/board.actions'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 import { logout } from '../store/actions/user.actions'
+import { getContrastingTextColor } from '../services/util.service'
+import { DynamicPicker } from './picker/DynamicPicker'
 import TrellisIcon from '../assets/images/icons/trellis.svg?react'
 import osAvatarImg from '../assets/images/avatars/OS-avatar.png'
 
@@ -15,6 +19,42 @@ export function AppHeader() {
 	const board = useSelector(storeState => storeState.boardModule.board)
 	const boardBgColor = board?.prefs?.background
 	const fontColor = boardBgColor ? getContrastingTextColor(boardBgColor) : 'black'
+
+
+	const [picker, setPicker] = useState(null)
+	const [anchorEl, setAnchorEl] = useState(null)
+	const openPopover = Boolean(anchorEl)
+
+	const PICKER_MAP = {
+		CREATE_BOARD: {
+			type: "CreateBoardPicker",
+			info: {
+				label: "Create Board:",
+				propName: "createBoard",
+			}
+		}
+	}
+
+	const handlePopoverOpen = (event, pickerType) => {
+		setAnchorEl(event.currentTarget)
+		setPicker(pickerType)
+	}
+
+	const handlePopoverClose = () => {
+		setAnchorEl(null)
+	}
+
+	async function onAddBoard(newBoard) {
+		let board = boardService.getEmptyBoard()
+		board = { ...board, ...newBoard }
+		try {
+			const savedBoard = await addBoard(board)
+			navigate(`/board/${savedBoard._id}`)
+			showSuccessMsg(`Board added`)
+		} catch (err) {
+			showErrorMsg('Cannot add board')
+		}
+	}
 
 	async function onLogout() {
 		try {
@@ -67,6 +107,9 @@ export function AppHeader() {
 							<button
 								style={darckModeBtnStyle}
 								className="btn-secondary create-btn"
+								onClick={(event) => {
+									handlePopoverOpen(event, PICKER_MAP.CREATE_BOARD)
+								}}
 							>
 								Create
 							</button>
@@ -80,6 +123,15 @@ export function AppHeader() {
 					</>
 				}
 			</nav>
+			{picker && (
+				<DynamicPicker
+					picker={picker}
+					open={openPopover}
+					onClose={handlePopoverClose}
+					anchorEl={anchorEl}
+					onAddBoard={onAddBoard}
+				/>
+			)}
 		</header>
 	)
 }

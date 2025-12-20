@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
 // import { loadBoards, addBoard, updateBoard, removeBoard, addBoardMsg } from '../store/actions/board.actions'
@@ -9,12 +9,13 @@ import { userService } from '../services/user'
 
 import { BoardList } from '../cmps/board/BoardList'
 import { BoardFilter } from '../cmps/board/BoardFilter'
-import { NavLink } from 'react-router'
+import { NavLink, useNavigate } from 'react-router'
 import { addBoard, loadBoards } from '../store/actions/board.actions'
 import { DynamicPicker } from '../cmps/picker/DynamicPicker'
 
 export function BoardIndex() {
     // const [filterBy, setFilterBy] = useState(boardService.getDefaultFilter())
+    const navigate = useNavigate()
     const boards = useSelector(storeState => storeState.boardModule.boards)
 
     const [picker, setPicker] = useState(null)
@@ -49,7 +50,8 @@ export function BoardIndex() {
         board = { ...board, ...newBoard }
         try {
             const savedBoard = await addBoard(board)
-            showSuccessMsg(`Board added (id: ${savedBoard._id})`)
+            navigate(`/board/${savedBoard._id}`)
+            showSuccessMsg(`Board added`)
         } catch (err) {
             showErrorMsg('Cannot add board')
         }
