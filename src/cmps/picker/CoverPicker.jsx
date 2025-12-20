@@ -10,7 +10,7 @@ export function CoverPicker({ task, onUpdateTask }) {
         setSelectedColorKey(colorKey)
         setSelectedAttachmentId(null)
 
-        onUpdateTask(task.idBoard, {
+        onUpdateTask(task.idBoard, task._id, {
             cover: { coverColor: colorKey },
             idAttachmentCover: null
         })
@@ -20,7 +20,10 @@ export function CoverPicker({ task, onUpdateTask }) {
         setSelectedColorKey(null)
         setSelectedAttachmentId(null)
 
-        onUpdateTask(task.idBoard, { cover: { coverColor: null }, idAttachmentCover: null })
+        onUpdateTask(task.idBoard, task._id, {
+            cover: { coverColor: null },
+            idAttachmentCover: null
+        })
     }
 
     function onSelectAttachment(attachmentId) {
@@ -45,7 +48,7 @@ export function CoverPicker({ task, onUpdateTask }) {
             cover: newCover
         }
 
-        onUpdateTask(task.idBoard, updatedTaskFields)
+        onUpdateTask(task.idBoard, task._id, updatedTaskFields)
     }
 
     async function handleImageUploaded(imgUrl, fileName, format) {
@@ -75,7 +78,7 @@ export function CoverPicker({ task, onUpdateTask }) {
             attachments: [...(task.attachments || []), newAttachment]
         };
 
-        onUpdateTask(task.idBoard, updatedTask)
+        onUpdateTask(task.idBoard, task._id, updatedTask)
 
         setSelectedAttachmentId(idAttachmentCover)
         setSelectedColorKey(null)
@@ -110,7 +113,6 @@ export function CoverPicker({ task, onUpdateTask }) {
                     {Object.keys(coverColorsMap).map((colorKey, idx) => (
                         <li key={colorKey} className={`cover-colors-item ${selectedColorKey === colorKey ? 'selected' : ''}`}>
                             <button
-                                key={colorKey}
                                 className="cover-colors-btn"
                                 onClick={() => onSaveCover(colorKey)}
                                 style={{ backgroundColor: coverColorsMap[colorKey] }}

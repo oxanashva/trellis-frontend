@@ -109,13 +109,13 @@ export function TaskPreview({ id, task, taskActions, members, className }) {
                     navigate(`/board/${boardId}/task/${task._id}`)
                 }}
             >
-                {task.cover?.idAttachment &&
+                {task?.idAttachmentCover &&
                     <div className="cover-img" >
-                        <img src={task.cover.url} alt="card-image" />
+                        <img src={task.cover?.url} alt="card-image" />
                     </div>
                 }
 
-                {task.cover?.coverColor && <div className="cover-color" style={{ backgroundColor: coverColorsMap[task.cover.coverColor] }}></div>}
+                {task.cover?.coverColor && <div className="cover-color" style={{ backgroundColor: coverColorsMap[task.cover?.coverColor] }}></div>}
 
                 <div className="task-header">
                     {task?.idLabels?.length !== 0 && labels?.length !== 0 &&

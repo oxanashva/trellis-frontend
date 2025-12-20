@@ -1,6 +1,4 @@
 .img-uploader {
-    background-color: var(--background-neutral);
-    border-radius: 0.5rem;
 
     &:hover {
         opacity: 0.7;
