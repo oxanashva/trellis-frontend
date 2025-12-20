@@ -1,23 +1,23 @@
 import CloseIcon from '../../assets/images/icons/close.svg?react'
 
 export function MemberPicker({ members, task, onUpdateTask }) {
-    const taskMembers = members.filter(member => task.idMembers.includes(member._id))
-    const boardMembers = members.filter(member => !task.idMembers.includes(member._id))
+    const taskMembers = members?.filter(member => task.idMembers?.includes(member._id))
+    const boardMembers = members?.filter(member => !task.idMembers?.includes(member._id))
 
     function onAddMember(member) {
-        onUpdateTask(task.idBoard, {
-            idMembers: [...task.idMembers, member._id],
+        onUpdateTask(task.idBoard, task._id, {
+            idMembers: [...(task.idMembers || []), member._id],
         })
     }
 
     function onRemoveMember(member) {
-        onUpdateTask(task.idBoard, {
+        onUpdateTask(task.idBoard, task._id, {
             idMembers: task.idMembers.filter(id => id !== member._id),
         })
     }
 
     function handleMemberClick(member) {
-        if (task.idMembers.includes(member._id)) {
+        if (task.idMembers?.includes(member._id)) {
             // Member is currently assigned to the task -> Remove them
             onRemoveMember(member)
         } else {
