@@ -68,13 +68,30 @@
         }
 
         & .search-input {
+            font-size: 0.875rem;
+            border: 1px solid var(--header-input-border);
+            background-color: rgba(255, 255, 255, 0.2);
+
+            &::placeholder {
+                color: var(--header-font-color);
+                opacity: 0.5;
+            }
 
             &:focus {
-                color: var(--text);
+                background-color: #fff;
+                border: 1px solid #388BFF;
+                color: var(--focus-text-color);
+
+                &::placeholder {
+                    color: var(--focus-text-color);
+                    opacity: 0.5;
+                }
             }
         }
 
         & .create-btn {
+            font-size: 0.875rem;
+
             &:hover {
                 background-color: rgb(0, 0, 0, 0.32);
             }
@@ -98,6 +115,20 @@
             display: flex;
             align-items: center;
             gap: 0.25rem;
+        }
+
+        & .avatar-icon {
+            width: 24px;
+            height: 24px;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center center;
+            border-radius: 50%;
+
+            &:hover {
+                background-color: #DDDEE1;
+                background-blend-mode: multiply;
+            }
         }
     }
 
