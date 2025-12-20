@@ -1,11 +1,12 @@
 import { BoardPreview } from './BoardPreview'
 
 export function BoardList({ boards, onAddBoard }) {
+    console.log('boards :', boards);
 
     return (
         <section>
             <ul className="board-list">
-                {boards.map(board =>
+                {boards?.map(board =>
                     <li key={board._id} className="board-preview">
                         <BoardPreview board={board} />
                     </li>)
