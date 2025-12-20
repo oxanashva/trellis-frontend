@@ -182,7 +182,6 @@
     & .confirm-text {
         font-size: 0.875rem;
         font-weight: 400;
-        text-align: center;
         margin-block: 1rem;
 
         &>span {

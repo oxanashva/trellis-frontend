@@ -237,7 +237,7 @@ export function BoardPicker({ isStarred, setStarred, prefs, uploadedImages, onUp
             {confirmRemove &&
                 <>
                     <header className="picker-header">
-                        <h3 className="picker-title">Colors</h3>
+                        <h3 className="picker-title">Delete board?</h3>
                         <button
                             className="icon-btn dynamic-btn previous-btn"
                             onClick={() => {
@@ -248,14 +248,13 @@ export function BoardPicker({ isStarred, setStarred, prefs, uploadedImages, onUp
                     </header>
                     <div className="board-editor confirm-content">
                         <div className="confirm-text">
-                            <span>This will remove this board.</span>
-                            <sapn> There is no undo.</sapn>
+                            <span>All lists, cards and actions will be deleted, and you won’t be able to re-open the board. There is no undo.</span>
                         </div>
                         <button
                             className="btn-danger"
                             onClick={onRemoveBoard}
                         >
-                            Close board
+                            Delete
                         </button>
                     </div>
                 </>
