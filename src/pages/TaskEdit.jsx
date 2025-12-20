@@ -145,12 +145,12 @@ export function TaskEdit() {
         const newStatus = !task.closed
         setIsChecked(prev => !prev)
 
-        onUpdateTask(task.idBoard, { closed: newStatus })
+        onUpdateTask(task.idBoard, task._id, { closed: newStatus })
     }
 
     function onNameBlur() {
         setIsNameEditing(false)
-        onUpdateTask(task.idBoard, { name: taskName })
+        onUpdateTask(task.idBoard, task._id, { name: taskName })
     }
 
     function onNameKeyDown(ev) {
@@ -167,7 +167,7 @@ export function TaskEdit() {
     function onDescriptionSubmit(ev) {
         ev.preventDefault()
         setIsDescEditing(false)
-        onUpdateTask(task.idBoard, { desc: taskDescription })
+        onUpdateTask(task.idBoard, task._id, { desc: taskDescription })
     }
 
     async function onAddAction(action) {

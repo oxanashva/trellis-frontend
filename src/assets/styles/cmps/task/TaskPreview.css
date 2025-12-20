@@ -77,7 +77,6 @@
             flex-direction: column;
             align-items: flex-start;
             justify-content: flex-start;
-            gap: 0.5rem;
             padding: 0.75rem 0.75rem 0;
         }
 
@@ -89,6 +88,7 @@
             & .task-label {
                 width: 40px;
                 height: 8px;
+                margin-block-end: 0.5rem;
                 border-radius: 0.25rem;
                 cursor: pointer;
             }
