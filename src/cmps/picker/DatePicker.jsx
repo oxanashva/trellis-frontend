@@ -18,7 +18,7 @@ export function DatePicker({ task, onUpdateTask, onClose }) {
         startDateInput: formatDate(task.start),
         isDueDateSet: true,
         dueDate: createDate(task.due, 1),
-        dueDateInput: formatDate(task.due),
+        dueDateInput: task.due ? task.due : formatDate(createDate(task.due, 1)),
         dueTime: formatTime(task.dueTime),
     }
 
@@ -103,15 +103,20 @@ export function DatePicker({ task, onUpdateTask, onClose }) {
                             ".MuiButtonBase-root:hover": {
                                 backgroundColor: "#0515240F",
                             },
-                            ".MuiPickersDay-root.Mui-selected": {
-                                color: "#1868DB",
-                                backgroundColor: "#E9F2FE",
+                            "& .MuiPickersDay-today": {
+                                border: "none !important",
+                                color: "var(--primary)",
+                            },
+                            "& .MuiPickersDay-today:after": {
+                                content: '""',
+                                position: "absolute",
+                                height: "0.125rem",
+                                insetInlineStart: "0.375rem",
+                                insetInlineEnd: "0.375rem",
+                                insetBlockEnd: "0.375rem",
                                 borderRadius: "0.25rem",
-                            },
-                            ".MuiPickersDay-root:hover.Mui-selected": {
-                                color: "#1868DB",
-                                backgroundColor: "#CFE1FD",
-                            },
+                                backgroundColor: "var(--primary)",
+                            }
                         }}
                     />
                 </LocalizationProvider>
