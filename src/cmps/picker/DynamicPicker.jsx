@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { CreateBoardPicker } from "./CreateBoardPicker"
 import { BoardPicker } from "./BoardPicker"
 import { DatePicker } from "./DatePicker"
 import { LabelPicker } from "./LabelPicker"
@@ -20,6 +20,7 @@ export function DynamicPicker({
     setStarred,
     prefs,
     uploadedImages,
+    onAddBoard,
     onUpdateBoard,
     onRemoveBoard,
     // group props
@@ -35,11 +36,16 @@ export function DynamicPicker({
     onRemoveLabel,
     members
 }) {
-    const isBoardPicker = ["GroupPicker", "BoardPicker"].includes(picker.type)
+    const isBoardPicker = ["CreateBoardPicker", "BoardPicker", "GroupPicker"].includes(picker.type)
     const isEditTaskPicker = ["MemberPicker", "LabelPicker", "DatePicker"].includes(picker.type)
 
     const renderPickerContent = () => {
         switch (picker.type) {
+            case "CreateBoardPicker":
+                return <CreateBoardPicker
+                    onAddBoard={onAddBoard}
+                    onClose={onClose}
+                />
             case "BoardPicker":
                 return <BoardPicker
                     isStarred={isStarred}

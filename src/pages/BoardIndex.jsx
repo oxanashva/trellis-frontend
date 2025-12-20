@@ -11,18 +11,42 @@ import { BoardList } from '../cmps/board/BoardList'
 import { BoardFilter } from '../cmps/board/BoardFilter'
 import { NavLink } from 'react-router'
 import { addBoard, loadBoards } from '../store/actions/board.actions'
+import { DynamicPicker } from '../cmps/picker/DynamicPicker'
 
 export function BoardIndex() {
     // const [filterBy, setFilterBy] = useState(boardService.getDefaultFilter())
     const boards = useSelector(storeState => storeState.boardModule.boards)
 
+    const [picker, setPicker] = useState(null)
+    const [anchorEl, setAnchorEl] = useState(null)
+    const openPopover = Boolean(anchorEl)
+
+    const PICKER_MAP = {
+        CREATE_BOARD: {
+            type: "CreateBoardPicker",
+            info: {
+                label: "Create Board:",
+                propName: "createBoard",
+            }
+        }
+    }
+
     useEffect(() => {
         loadBoards()
     }, [])
 
-    async function onAddBoard() {
-        const board = boardService.getEmptyBoard()
-        board.name = prompt('Name')
+    const handlePopoverOpen = (event, pickerType) => {
+        setAnchorEl(event.currentTarget)
+        setPicker(pickerType)
+    }
+
+    const handlePopoverClose = () => {
+        setAnchorEl(null)
+    }
+
+    async function onAddBoard(newBoard) {
+        let board = boardService.getEmptyBoard()
+        board = { ...board, ...newBoard }
         try {
             const savedBoard = await addBoard(board)
             showSuccessMsg(`Board added (id: ${savedBoard._id})`)
@@ -73,9 +97,21 @@ export function BoardIndex() {
             <main>
                 <div className="boards-container">
                     <h3>Your boards</h3>
-                    <BoardList boards={boards} onAddBoard={onAddBoard} />
+                    <BoardList
+                        boards={boards}
+                        picker={PICKER_MAP.CREATE_BOARD}
+                        handlePopoverOpen={handlePopoverOpen} onAddBoard={onAddBoard} />
                 </div>
             </main>
+            {picker && (
+                <DynamicPicker
+                    picker={picker}
+                    open={openPopover}
+                    onClose={handlePopoverClose}
+                    anchorEl={anchorEl}
+                    onAddBoard={onAddBoard}
+                />
+            )}
         </section>
     )
 }

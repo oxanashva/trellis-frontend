@@ -61,7 +61,7 @@ export function TaskEdit() {
     const [isAddingNewComment, setIsAddingNewComment] = useState(false)
     const [picker, setPicker] = useState(null)
     const [anchorEl, setAnchorEl] = useState(null)
-    const openPopover = Boolean(anchorEl);
+    const openPopover = Boolean(anchorEl)
     const [taskName, setTaskName] = useState(task?.name || "")
     const [taskDescription, setTaskDescription] = useState(task?.desc || "")
     const [commentText, setCommentText] = useState("")
@@ -74,7 +74,7 @@ export function TaskEdit() {
     const handlePopoverOpen = (event, pickerType) => {
         setAnchorEl(event.currentTarget)
         setPicker(pickerType)
-    };
+    }
 
     const handlePopoverClose = () => {
         setAnchorEl(null)

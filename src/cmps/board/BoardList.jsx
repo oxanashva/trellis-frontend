@@ -1,6 +1,6 @@
 import { BoardPreview } from './BoardPreview'
 
-export function BoardList({ boards, onAddBoard }) {
+export function BoardList({ boards, picker, handlePopoverOpen }) {
 
     return (
         <section>
@@ -10,7 +10,13 @@ export function BoardList({ boards, onAddBoard }) {
                         <BoardPreview board={board} />
                     </li>)
                 }
-                <li onClick={onAddBoard}><div>Create new board</div></li>
+                <li
+                    onClick={(event) => {
+                        handlePopoverOpen(event, picker)
+                    }}
+                >
+                    <div>Create new board</div>
+                </li>
             </ul>
         </section>
     )
