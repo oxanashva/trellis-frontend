@@ -44,7 +44,7 @@ export function AppHeader() {
 	return (
 		<header style={headerStyle} className={headerClassName}>
 			<nav>
-				<NavLink to="/" className="logo">
+				<NavLink to="/workspace" className="logo">
 					<TrellisIcon width={24} height={24} fill="currentColor" />
 					<span>Trellis</span>
 				</NavLink>
