@@ -1,7 +1,6 @@
 import { BoardPreview } from './BoardPreview'
 
 export function BoardList({ boards, onAddBoard }) {
-    console.log('boards :', boards);
 
     return (
         <section>
