@@ -14,6 +14,7 @@ import { ImgUploader } from '../ImgUploader'
 export function BoardPicker({ isStarred, setStarred, prefs, uploadedImages, onUpdateBoard, onRemoveBoard }) {
     const [isEditingBoardBackground, setIsEditingBoardBackground] = useState(false)
     const [isEditingColors, setIsEditingColors] = useState(false)
+    const [confirmRemove, setConfirmRemove] = useState(false)
 
     async function handleImageUploaded(imgUrl, fileName, format) {
         const background = await getAverageColor(imgUrl)
@@ -78,7 +79,7 @@ export function BoardPicker({ isStarred, setStarred, prefs, uploadedImages, onUp
 
     return (
         <section className="board-picker">
-            {!isEditingBoardBackground && !isEditingColors &&
+            {!isEditingBoardBackground && !isEditingColors && !confirmRemove &&
                 <>
                     <header className="picker-header">
                         <h2 className="picker-title">Colors</h2>
@@ -115,12 +116,12 @@ export function BoardPicker({ isStarred, setStarred, prefs, uploadedImages, onUp
                             <li>
                                 <button
                                     className="action-btn"
-                                    onClick={onRemoveBoard}
+                                    onClick={() => setConfirmRemove(true)}
                                 >
                                     <span className="action-btn-icon">
                                         <MinusIcon width={16} height={16} />
                                     </span>
-                                    <span>Remove board</span>
+                                    <span>Close board</span>
                                 </button>
                             </li>
                         </ul>
@@ -128,7 +129,7 @@ export function BoardPicker({ isStarred, setStarred, prefs, uploadedImages, onUp
                 </>
             }
 
-            {isEditingBoardBackground &&
+            {isEditingBoardBackground && !confirmRemove &&
                 <>
                     <header className="picker-header">
                         <h3 className="picker-title">Colors</h3>
@@ -203,7 +204,7 @@ export function BoardPicker({ isStarred, setStarred, prefs, uploadedImages, onUp
                 </>
             }
 
-            {isEditingColors && !isEditingBoardBackground &&
+            {isEditingColors && !isEditingBoardBackground && !confirmRemove &&
                 <>
                     <header className="picker-header">
                         <h3 className="picker-title">Colors</h3>
@@ -229,6 +230,33 @@ export function BoardPicker({ isStarred, setStarred, prefs, uploadedImages, onUp
                                 </li>
                             ))}
                         </ul>
+                    </div>
+                </>
+            }
+
+            {confirmRemove &&
+                <>
+                    <header className="picker-header">
+                        <h3 className="picker-title">Colors</h3>
+                        <button
+                            className="icon-btn dynamic-btn previous-btn"
+                            onClick={() => {
+                                setConfirmRemove(false)
+                            }}>
+                            <ShevronLeft width={16} height={16} fill="currentColor" />
+                        </button>
+                    </header>
+                    <div className="board-editor confirm-content">
+                        <div className="confirm-text">
+                            <span>This will remove this board.</span>
+                            <sapn> There is no undo.</sapn>
+                        </div>
+                        <button
+                            className="btn-danger"
+                            onClick={onRemoveBoard}
+                        >
+                            Close board
+                        </button>
                     </div>
                 </>
             }
