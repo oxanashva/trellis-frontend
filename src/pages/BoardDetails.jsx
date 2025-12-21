@@ -190,23 +190,15 @@ export function BoardDetails() {
         const activeTaskIndex = tasksOrder.findIndex(t => t._id === activeId)
         if (activeTaskIndex === -1) return
 
-        const activeTask = tasksOrder[activeTaskIndex]
-        const oldIdGroup = activeTask.idGroup
-
         const overTask = tasksOrder.find(t => t._id === overId)
         const overGroup = groupsOrder.find(g => g._id === overId)
 
         const newIdGroup = overTask ? overTask.idGroup : overGroup?._id
 
-        if (newIdGroup && oldIdGroup !== newIdGroup) {
-            const updatedTasks = tasksOrder.map(task => {
-                if (task._id === activeId) {
-                    return { ...task, idGroup: newIdGroup }
-                }
-                return task
-            })
-
-            setTasksOrder(updatedTasks)
+        if (newIdGroup && activeTaskIndex.idGroup !== newIdGroup) {
+            setTasksOrder(prev => prev.map(task =>
+                task._id === activeId ? { ...task, idGroup: newIdGroup } : task
+            ))
         }
     }
 
@@ -246,31 +238,34 @@ export function BoardDetails() {
             }
         } else {
             const activeTaskIndex = tasksOrder.findIndex(t => t._id === activeId)
-            const overTaskIndex = tasksOrder.findIndex(t => t._id === overId)
+            if (activeTaskIndex === -1) return
+            const activeTask = tasksOrder[activeTaskIndex]
 
-            if (activeTaskIndex === -1 || overTaskIndex === -1) {
+            const overTaskIndex = tasksOrder.findIndex(t => t._id === overId)
+            const overGroup = groupsOrder.find(g => g._id === overId)
+
+            const newGroupId = (overTaskIndex !== -1)
+                ? tasksOrder[overTaskIndex].idGroup
+                : overGroup?._id
+
+            if (!newGroupId) {
                 setActiveId(null)
                 return
             }
 
+            let newTasksOrder = [...tasksOrder]
+            const updatedTask = { ...activeTask, idGroup: newGroupId }
+            newTasksOrder[activeTaskIndex] = updatedTask
 
-            const activeTask = tasksOrder[activeTaskIndex]
-            const overTask = tasksOrder[overTaskIndex]
-
-            let tempTasks = [...tasksOrder]
-
-            if (activeTask.idGroup !== overTask.idGroup) {
-                tempTasks[activeTaskIndex] = { ...activeTask, idGroup: overTask.idGroup }
+            if (overTaskIndex !== -1) {
+                newTasksOrder = arrayMove(newTasksOrder, activeTaskIndex, overTaskIndex)
             }
 
-            const reorderedTasks = arrayMove(tempTasks, activeTaskIndex, overTaskIndex)
-            setTasksOrder(reorderedTasks)
+            setTasksOrder(newTasksOrder)
+            updateBoard({ ...board, tasks: newTasksOrder })
 
-            const updatedBoard = { ...board, tasks: reorderedTasks }
-            updateBoard(updatedBoard)
-
+            setActiveId(null)
         }
-        setActiveId(null)
     }
 
     const customMouseSensor = useSensor(MouseSensor, {
