@@ -156,6 +156,14 @@ export const getLabelColor = (colorName) => {
     return labelsColorsMap[colorName] || '#CCCCCC';
 }
 
+export function getDefaultLabels() {
+    return Object.keys(defaultLabelsColorMap).map((color) => ({
+        _id: makeId(),
+        name: "",
+        color
+    }))
+}
+
 export const gradientColorsMap = {
     Bubble,
     Snow,

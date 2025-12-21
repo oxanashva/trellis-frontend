@@ -5,7 +5,9 @@ import PenIcon from "../../assets/images/icons/pen.svg?react"
 import { useSelector } from "react-redux"
 
 export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onRemoveLabel }) {
-    const [hasLabels, setHasLabels] = useState(task?.labels?.length > 0)
+    const board = useSelector(storeState => storeState.boardModule.board)
+    const boardLabels = board?.labels || []
+
     const [selectedLabels, setSelectedLabels] = useState(task?.idLabels || [])
     const [isEditing, setIsEditing] = useState(false)
     const [isCreating, setIsCreating] = useState(false)
@@ -14,9 +16,7 @@ export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onR
     const [labelToEdit, setLabelToEdit] = useState(null)
     const [confirmRemove, setConfirmRemove] = useState(false)
 
-    const currentPreviewColorKey = selectedColorKey || (labelToEdit && labelToEdit.color) || (isCreating && Object.keys(labelsColorsMap)[0]) || (!hasLabels && Object.keys(labelsColorsMap)[0])
-
-    const boardLabels = useSelector(storeState => storeState.boardModule.board?.labels)
+    const currentPreviewColorKey = selectedColorKey || (labelToEdit && labelToEdit.color) || (isCreating && Object.keys(labelsColorsMap)[0])
 
     function handleLabelToggle(labelId) {
         const isCurrentlySelected = selectedLabels.includes(labelId)
@@ -44,7 +44,6 @@ export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onR
         const newSelectedLabels = [...(selectedLabels || []), newLabel._id]
 
         setSelectedLabels(newSelectedLabels)
-        setHasLabels(true)
         setIsCreating(false)
         setLabelName("")
         setSelectedColorKey(null)
@@ -117,11 +116,9 @@ export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onR
 
             <div className="picker-container label-editor">
                 {/* Displaying existing task labels */}
-                {hasLabels && !isEditing && !isCreating && !confirmRemove &&
+                {!isEditing && !isCreating && !confirmRemove &&
                     <div className="label-editor-content">
                         {boardLabels?.map((label) => {
-                            const labelHexColor = labelsColorsMap[label.color]
-                            const isLabelSelected = selectedLabels.includes(label._id)
                             return (
                                 <div className="label-container" key={label._id}>
                                     <label className="label-item" key={label._id} htmlFor={label._id}>
@@ -129,49 +126,14 @@ export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onR
                                             id={label._id}
                                             type="checkbox"
                                             name="label"
-                                            checked={isLabelSelected}
+                                            checked={selectedLabels.includes(label._id)}
                                             onChange={() => handleLabelToggle(label._id)}
                                         />
                                         <span className="label-checkbox">
-                                            <span style={{ backgroundColor: labelHexColor }} className="label-box">{label.name}</span>
-                                        </span>
-                                    </label>
-                                    <button
-                                        className="icon-btn dynamic-btn"
-                                        onClick={() => {
-                                            setLabelToEdit(label)
-                                            setLabelName(label.name)
-                                            setSelectedColorKey(label.color)
-                                            setIsEditing(true)
-                                        }}
-                                    >
-                                        <PenIcon width={16} height={16} fill="currentColor" />
-                                    </button>
-                                </div>
-                            )
-                        })}
-                    </div>
-                }
-
-                {/* Displaying all available labels if task has none */}
-                {!hasLabels && !isEditing && !isCreating && !confirmRemove &&
-                    <div className="label-editor-content">
-                        {boardLabels?.map((label) => {
-                            const labelHexColor = labelsColorsMap[label.color]
-                            const isLabelSelected = selectedLabels.includes(label._id)
-
-                            return (
-                                <div className="label-container" key={label._id}>
-                                    <label className="label-item" key={label._id} htmlFor={label._id}>
-                                        <input
-                                            type="checkbox"
-                                            name="label"
-                                            id={label._id}
-                                            checked={isLabelSelected}
-                                            onChange={() => handleLabelToggle(label._id)}
-                                        />
-                                        <span className="label-checkbox">
-                                            <span style={{ backgroundColor: labelHexColor }} className="label-box">{label.name}</span>
+                                            <span
+                                                style={{ backgroundColor: labelsColorsMap[label.color] }} className="label-box">
+                                                {label.name}
+                                            </span>
                                         </span>
                                     </label>
                                     <button
@@ -197,7 +159,7 @@ export function LabelPicker({ task, onUpdateTask, onAddLabel, onUpdateLabel, onR
                         <div className="label-editor-content">
                             <div className="label-preview-container">
                                 <div
-                                    style={{ backgroundColor: labelsColorsMap[currentPreviewColorKey] }}
+                                    style={{ backgroundColor: labelsColorsMap[currentPreviewColorKey] || currentPreviewColorKey }}
                                     className="label-box"
                                 >
                                     {labelName}
