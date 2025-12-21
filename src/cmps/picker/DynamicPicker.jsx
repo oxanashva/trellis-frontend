@@ -51,6 +51,7 @@ export function DynamicPicker({
                 onClose={onClose}
             />
         ),
+
         BoardPicker: (
             <BoardPicker
                 isStarred={isStarred}
