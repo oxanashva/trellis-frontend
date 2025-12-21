@@ -1,3 +1,5 @@
+import Popover from "@mui/material/Popover"
+
 import { CreateBoardPicker } from "./CreateBoardPicker"
 import { BoardPicker } from "./BoardPicker"
 import { DatePicker } from "./DatePicker"
@@ -5,10 +7,13 @@ import { LabelPicker } from "./LabelPicker"
 import { GroupPicker } from "./GroupPicker"
 import { CoverPicker } from "./CoverPicker"
 import { MemberPicker } from "./MemberPicker"
-import Popover from "@mui/material/Popover"
+
 import CloseIcon from "../../assets/images/icons/close.svg?react"
 
-const TASK_PICKER_OFFSET = "68px";
+const TASK_PICKER_OFFSET = "68px"
+
+const BOARD_PICKERS = ["CreateBoardPicker", "BoardPicker", "GroupPicker"]
+const EDIT_TASK_PICKERS = ["LabelPicker", "DatePicker", "MemberPicker", "CoverPicker"]
 
 export function DynamicPicker({
     picker,
@@ -36,68 +41,82 @@ export function DynamicPicker({
     onRemoveLabel,
     members
 }) {
-    const isBoardPicker = ["CreateBoardPicker", "BoardPicker", "GroupPicker"].includes(picker.type)
-    const isEditTaskPicker = ["MemberPicker", "LabelPicker", "DatePicker"].includes(picker.type)
+    const isBoardPicker = BOARD_PICKERS.includes(picker.type)
+    const isEditTaskPicker = EDIT_TASK_PICKERS.includes(picker.type)
 
-    const renderPickerContent = () => {
-        switch (picker.type) {
-            case "CreateBoardPicker":
-                return <CreateBoardPicker
-                    onAddBoard={onAddBoard}
-                    onClose={onClose}
-                />
-            case "BoardPicker":
-                return <BoardPicker
-                    isStarred={isStarred}
-                    setStarred={setStarred}
-                    prefs={prefs}
-                    uploadedImages={uploadedImages}
-                    onUpdateBoard={onUpdateBoard}
-                    onRemoveBoard={onRemoveBoard}
-                />
-            case "GroupPicker":
-                return <GroupPicker
-                    boardId={boardId}
-                    groupId={groupId}
-                    setIsAddingTask={setIsAddingTask}
-                    onRemoveGroup={onRemoveGroup}
-                    onClose={onClose}
-                />
-            case "LabelPicker":
-                return <LabelPicker
-                    task={task}
-                    onUpdateTask={onUpdateTask}
-                    onAddLabel={onAddLabel}
-                    onUpdateLabel={onUpdateLabel}
-                    onRemoveLabel={onRemoveLabel}
-                />
-            case "DatePicker":
-                return <DatePicker
-                    task={task}
-                    onUpdateTask={onUpdateTask}
-                    onClose={onClose}
-                />
-            case "MemberPicker":
-                return <MemberPicker
-                    task={task}
-                    members={members}
-                    onUpdateTask={onUpdateTask}
-                />
-            case "CoverPicker":
-                return <CoverPicker
-                    task={task}
-                    onUpdateTask={onUpdateTask}
-                />
-            default:
-                return <p>UNKNOWN {picker.type}</p>
-        }
+    const pickerMap = {
+        CreateBoardPicker: (
+            <CreateBoardPicker
+                onAddBoard={onAddBoard}
+                onClose={onClose}
+            />
+        ),
+        BoardPicker: (
+            <BoardPicker
+                isStarred={isStarred}
+                setStarred={setStarred}
+                prefs={prefs}
+                uploadedImages={uploadedImages}
+                onUpdateBoard={onUpdateBoard}
+                onRemoveBoard={onRemoveBoard}
+            />
+        ),
+
+        GroupPicker: (
+            <GroupPicker
+                boardId={boardId}
+                groupId={groupId}
+                setIsAddingTask={setIsAddingTask}
+                onRemoveGroup={onRemoveGroup}
+                onClose={onClose}
+            />
+        ),
+
+        LabelPicker: (
+            <LabelPicker
+                task={task}
+                onUpdateTask={onUpdateTask}
+                onAddLabel={onAddLabel}
+                onUpdateLabel={onUpdateLabel}
+                onRemoveLabel={onRemoveLabel}
+            />
+        ),
+
+        DatePicker: (
+            <DatePicker
+                task={task}
+                onUpdateTask={onUpdateTask}
+                onClose={onClose}
+            />
+        ),
+
+        MemberPicker: (
+            <MemberPicker
+                task={task}
+                members={members}
+                onUpdateTask={onUpdateTask}
+            />
+        ),
+
+        CoverPicker: (
+            <CoverPicker
+                task={task}
+                onUpdateTask={onUpdateTask}
+            />
+        )
     }
+
+    const content = pickerMap[picker.type] || (
+        <p>UNKNOWN {picker.type}</p>
+    )
+
+    const handleClose = () => onClose(false)
 
     return (
         <Popover
             open={open}
             anchorEl={anchorEl}
-            onClose={() => onClose(false)}
+            onClose={handleClose}
             anchorOrigin={{
                 vertical: isEditTaskPicker ? "center" : "top",
                 horizontal: isBoardPicker ? "right" : "left",
@@ -121,12 +140,12 @@ export function DynamicPicker({
             <div className="dynamic-picker">
                 <button
                     className="icon-btn dynamic-btn close-btn"
-                    onClick={() => onClose(false)}
+                    onClick={handleClose}
                 >
                     <CloseIcon width={16} height={16} />
                 </button>
 
-                {renderPickerContent()}
+                {content}
             </div>
         </Popover>
     )
