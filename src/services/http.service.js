@@ -1,8 +1,12 @@
 import Axios from 'axios'
 
+// const BASE_URL = import.meta.env.DEV
+//     ? '/api/'
+//     : '//localhost:3030/api/'
+
 const BASE_URL = import.meta.env.DEV
     ? '/api/'
-    : '//localhost:3030/api/'
+    : 'https://trellis-backend.onrender.com/api/'
 
 
 const axios = Axios.create({ withCredentials: true })
