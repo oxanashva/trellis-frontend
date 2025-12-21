@@ -61,7 +61,6 @@ export function CreateBoardPicker({ onAddBoard, onClose }) {
                 <h3 className="picker-subtitle create-board-title">Board title</h3>
 
                 <input
-
                     type="text"
                     required
                     value={boardName}

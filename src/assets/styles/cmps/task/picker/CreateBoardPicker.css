@@ -9,6 +9,7 @@
         overflow-y: auto;
         padding-inline: 0.5rem;
         padding-block-end: 0.5rem;
+        font-size: 0.875rem;
 
         &::-webkit-scrollbar-track {
             background: transparent;
