@@ -44,7 +44,7 @@ export function CreateBoardPicker({ onAddBoard, onClose }) {
     return (
         <section className="create-board-picker">
             <header className="picker-header">
-                <h3 className="picker-title">Colors</h3>
+                <h3 className="picker-title">Create board</h3>
             </header>
 
             {/* Wrapped in a form */}

@@ -220,10 +220,10 @@ export function TaskEdit() {
                 date: Date.now(),
                 type: "commentTask",
                 memberCreator: {
-                    fullName: "Anna Coss",
+                    fullName: "Oxana Shvartsman",
                     avatarUrl: "",
-                    username: "annacoss",
-                    initials: "AC"
+                    username: "oxanashva",
+                    initials: "OS"
                 } // TODO: do not hardcode
             }
             onAddAction(actionToSave)

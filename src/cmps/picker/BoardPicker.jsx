@@ -82,7 +82,7 @@ export function BoardPicker({ isStarred, setStarred, prefs, uploadedImages, onUp
             {!isEditingBoardBackground && !isEditingColors && !confirmRemove &&
                 <>
                     <header className="picker-header">
-                        <h2 className="picker-title">Colors</h2>
+                        <h2 className="picker-title">Menu</h2>
                     </header>
 
                     <div className="board-editor">
@@ -132,7 +132,7 @@ export function BoardPicker({ isStarred, setStarred, prefs, uploadedImages, onUp
             {isEditingBoardBackground && !confirmRemove &&
                 <>
                     <header className="picker-header">
-                        <h3 className="picker-title">Colors</h3>
+                        <h3 className="picker-title">Change background</h3>
                         <button
                             className="icon-btn dynamic-btn previous-btn"
                             onClick={() => {

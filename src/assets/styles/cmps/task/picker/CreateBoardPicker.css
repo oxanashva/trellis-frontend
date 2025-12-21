@@ -107,7 +107,7 @@
         &:disabled {
             color: var(--text-subtle);
             background-color: var(--background-neutral);
-            opacity: 0.5;
+            opacity: 0.7;
             cursor: not-allowed;
         }
     }
