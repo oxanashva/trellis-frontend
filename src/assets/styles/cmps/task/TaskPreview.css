@@ -14,14 +14,39 @@
         visibility: hidden;
     }
 
-    &.task-preview-closed,
-    &:hover {
+    & .task-name {
+        display: flex;
+        flex-flow: row;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 0.5rem;
+    }
 
-        .task-state,
-        .task-name-text {
-            transition: opacity 0.3s ease-in, transform 0.3s ease-in;
+    & .task-state {
+        display: flex;
+        height: 20px;
+        transition: opacity 0.3s ease-in;
+        opacity: 0;
+
+        &>span {
+            display: flex;
+            align-items: center;
         }
+    }
 
+    & .task-name-text {
+        width: 100%;
+        transform: translateX(-20px);
+        transition: all 0.3s ease-in;
+    }
+
+    .task-state,
+    .task-name-text {
+        transition: opacity 0.3s ease-in, transform 0.3s ease-in;
+    }
+
+    &:hover,
+    &.task-preview-closed {
         .task-name-text {
             width: calc(100% - 20px);
             transform: translateX(0px);
@@ -32,12 +57,26 @@
         }
     }
 
-    &:hover {
-        outline: #4688EC auto 2px;
-        outline-offset: 2px;
+    @media (hover: none) {
+        .task-name-text {
+            width: calc(100% - 20px);
+            transform: translateX(0px);
+        }
+
+        .task-state {
+            opacity: 1;
+        }
+    }
+
+    @media (hover: hover) {
+        &:hover {
+            outline: #4688EC auto 2px;
+            outline-offset: 2px;
+        }
     }
 
     &.task-preview-closed {
+
         .task-name-text {
             opacity: 0.5;
         }
@@ -201,31 +240,5 @@
             top: 0.25rem;
             right: 2.2rem;
         }
-    }
-
-    & .task-name {
-        display: flex;
-        flex-flow: row;
-        align-items: flex-start;
-        justify-content: flex-start;
-        gap: 0.5rem;
-    }
-
-    & .task-state {
-        display: flex;
-        height: 20px;
-        transition: opacity 0.3s ease-in;
-        opacity: 0;
-
-        &>span {
-            display: flex;
-            align-items: center;
-        }
-    }
-
-    & .task-name-text {
-        width: 100%;
-        transform: translateX(-20px);
-        transition: all 0.3s ease-in;
     }
 }
