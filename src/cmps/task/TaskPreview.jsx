@@ -44,6 +44,7 @@ export function TaskPreview({ id, task, taskActions, members, className }) {
         transform: CSS.Transform.toString(transform),
         transition,
         opacity: isDragging ? 0.5 : 1,
+        touchAction: 'none',
     }
 
     useEffect(() => {

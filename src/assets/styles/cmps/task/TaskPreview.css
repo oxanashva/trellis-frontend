@@ -164,7 +164,14 @@
         }
 
         & .task-btn {
-            display: none;
+            @media(hover: hover) {
+                display: none;
+
+                &:hover {
+                    background-color: #F0F1F2;
+                }
+            }
+
             position: absolute;
             height: 26px;
             margin: 0 0.125px;
@@ -174,16 +181,14 @@
             border-radius: 50%;
             background-color: #fff;
             cursor: pointer;
-
-            &:hover {
-                background-color: #F0F1F2;
-            }
         }
 
-        &:hover {
-            & .task-btn {
-                display: flex;
-                align-items: center;
+        @media(hover: hover) {
+            &:hover {
+                & .task-btn {
+                    display: flex;
+                    align-items: center;
+                }
             }
         }
 
