@@ -92,6 +92,7 @@ export function GroupPreview({ id, group, tasks, actions, members, onUpdateGroup
         transform: CSS.Transform.toString(transform),
         transition,
         opacity: isDragging ? 0.5 : 1,
+        touchAction: 'none',
     }
 
     // If `className` contains 'group-preview-ghost', the component is used for DragOverlay

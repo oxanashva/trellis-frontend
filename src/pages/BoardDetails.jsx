@@ -6,7 +6,7 @@ import { loadBoard, addBoard, updateBoard, removeBoard, addGroup, updateGroup, r
 
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 
-import { DndContext, useSensors, useSensor, MouseSensor, DragOverlay, closestCenter } from '@dnd-kit/core'
+import { DndContext, useSensors, useSensor, MouseSensor, TouchSensor, DragOverlay, closestCenter } from '@dnd-kit/core'
 import { SortableContext, horizontalListSortingStrategy, arrayMove } from '@dnd-kit/sortable'
 import { DragOverlayWrapper } from '../cmps/DragOverlayWrapper'
 
@@ -278,8 +278,18 @@ export function BoardDetails() {
         },
     })
 
+    const customTouchSensor = useSensor(TouchSensor, {
+        // Defines conditions (like delay) needed to start dragging
+        activationConstraint: {
+            // Requires 250ms press. Differentiates a quick 'click' (edit) 
+            // from a 'click and hold' (drag).
+            delay: 250,
+            tolerance: 5,
+        },
+    })
+
     // Registers the custom delayed sensor for use in <DndContext>
-    const sensors = useSensors(customMouseSensor)
+    const sensors = useSensors(customMouseSensor, customTouchSensor)
 
     const boardDetailsStyle = {
         backgroundColor: board?.prefs?.background,
